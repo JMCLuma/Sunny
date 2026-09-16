@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
+import { Route as MyRouteImport } from './routes/my'
 import { Route as OperationsRouteRouteImport } from './routes/operations/route'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
@@ -17,6 +18,7 @@ import { Route as PublicContactRouteImport } from './routes/_public/contact'
 import { Route as PublicDonateRouteImport } from './routes/_public/donate'
 import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
 import { Route as PublicTermsRouteImport } from './routes/_public/terms'
+import { Route as MyIndexRouteImport } from './routes/my/index'
 import { Route as OperationsIndexRouteImport } from './routes/operations/index'
 import { Route as OperationsAdminRouteImport } from './routes/operations/admin'
 import { Route as OperationsApplicationsRouteImport } from './routes/operations/applications'
@@ -36,6 +38,11 @@ import { Route as OperationsProgramsProgramIdInstancesInstanceIdRouteImport } fr
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyRoute = MyRouteImport.update({
+  id: '/my',
+  path: '/my',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OperationsRouteRoute = OperationsRouteRouteImport.update({
@@ -72,6 +79,11 @@ const PublicTermsRoute = PublicTermsRouteImport.update({
   id: '/terms',
   path: '/terms',
   getParentRoute: () => PublicRoute,
+} as any)
+const MyIndexRoute = MyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MyRoute,
 } as any)
 const OperationsIndexRoute = OperationsIndexRouteImport.update({
   id: '/',
@@ -161,6 +173,7 @@ const OperationsProgramsProgramIdInstancesInstanceIdRoute =
 export interface FileRoutesByFullPath {
   '/operations': typeof OperationsRouteRouteWithChildren
   '/': typeof PublicIndexRoute
+  '/my': typeof MyRouteWithChildren
   '/about': typeof PublicAboutRoute
   '/contact': typeof PublicContactRoute
   '/donate': typeof PublicDonateRoute
@@ -176,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/operations/people': typeof OperationsPeopleRoute
   '/operations/risk': typeof OperationsRiskRoute
   '/operations/vendors': typeof OperationsVendorsRoute
+  '/my/': typeof MyIndexRoute
   '/operations/': typeof OperationsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdRouteRouteWithChildren
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
@@ -200,6 +214,7 @@ export interface FileRoutesByTo {
   '/operations/risk': typeof OperationsRiskRoute
   '/operations/vendors': typeof OperationsVendorsRoute
   '/': typeof PublicIndexRoute
+  '/my': typeof MyIndexRoute
   '/operations': typeof OperationsIndexRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
   '/operations/programs': typeof OperationsProgramsIndexRoute
@@ -210,6 +225,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/operations': typeof OperationsRouteRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/my': typeof MyRouteWithChildren
   '/_public/about': typeof PublicAboutRoute
   '/_public/contact': typeof PublicContactRoute
   '/_public/donate': typeof PublicDonateRoute
@@ -226,6 +242,7 @@ export interface FileRoutesById {
   '/operations/risk': typeof OperationsRiskRoute
   '/operations/vendors': typeof OperationsVendorsRoute
   '/_public/': typeof PublicIndexRoute
+  '/my/': typeof MyIndexRoute
   '/operations/': typeof OperationsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdRouteRouteWithChildren
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
@@ -238,6 +255,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/operations'
     | '/'
+    | '/my'
     | '/about'
     | '/contact'
     | '/donate'
@@ -253,6 +271,7 @@ export interface FileRouteTypes {
     | '/operations/people'
     | '/operations/risk'
     | '/operations/vendors'
+    | '/my/'
     | '/operations/'
     | '/operations/programs/$programId'
     | '/operations/programs/events'
@@ -277,6 +296,7 @@ export interface FileRouteTypes {
     | '/operations/risk'
     | '/operations/vendors'
     | '/'
+    | '/my'
     | '/operations'
     | '/operations/programs/events'
     | '/operations/programs'
@@ -286,6 +306,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/operations'
     | '/_public'
+    | '/my'
     | '/_public/about'
     | '/_public/contact'
     | '/_public/donate'
@@ -302,6 +323,7 @@ export interface FileRouteTypes {
     | '/operations/risk'
     | '/operations/vendors'
     | '/_public/'
+    | '/my/'
     | '/operations/'
     | '/operations/programs/$programId'
     | '/operations/programs/events'
@@ -313,6 +335,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   OperationsRouteRoute: typeof OperationsRouteRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
+  MyRoute: typeof MyRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -322,6 +345,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof PublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my': {
+      id: '/my'
+      path: '/my'
+      fullPath: '/my'
+      preLoaderRoute: typeof MyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/operations': {
@@ -372,6 +402,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/terms'
       preLoaderRoute: typeof PublicTermsRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/my/': {
+      id: '/my/'
+      path: '/'
+      fullPath: '/my/'
+      preLoaderRoute: typeof MyIndexRouteImport
+      parentRoute: typeof MyRoute
     }
     '/operations/': {
       id: '/operations/'
@@ -566,9 +603,20 @@ const PublicRouteChildren: PublicRouteChildren = {
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
+interface MyRouteChildren {
+  MyIndexRoute: typeof MyIndexRoute
+}
+
+const MyRouteChildren: MyRouteChildren = {
+  MyIndexRoute: MyIndexRoute,
+}
+
+const MyRouteWithChildren = MyRoute._addFileChildren(MyRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   OperationsRouteRoute: OperationsRouteRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
+  MyRoute: MyRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

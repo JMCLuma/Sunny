@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import type { AppRouterContext } from "../router-context";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { DemoBar } from "@/features/demo/demo-bar";
 
 function NotFoundComponent() {
   return (
@@ -134,6 +135,9 @@ function RootComponent() {
           not to the shell, so each area owns its own header. */}
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      {/* Mounted once at the root so every surface — public, My Luma and
+          Operations — carries the same wireframe notice and persona switcher. */}
+      <DemoBar />
     </QueryClientProvider>
   );
 }
