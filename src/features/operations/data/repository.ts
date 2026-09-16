@@ -1,6 +1,33 @@
 import type {
+  Account,
+  ApplicationAnswer,
+  ApplicationForm,
+  ApplicationScore,
+  ApplicationStatus,
+  ApplicationSubmission,
   AuditEvent,
+  ChecklistEntry,
+  ChecklistProgress,
+  ChecklistTarget,
+  CriterionScore,
+  DecisionOutcome,
+  EligibilityAudience,
+  EligibilityCriteria,
+  EligibilityResult,
   Id,
+  Interview,
+  InterviewStatus,
+  Invitation,
+  LanguageProficiency,
+  MatchOutcome,
+  MatchReview,
+  Person,
+  PersonRelationship,
+  Profile,
+  RelationshipAccessGrant,
+  SchoolType,
+  ScoringRubric,
+  SelectionDecision,
   IntegrationConnection,
   IsoDate,
   IsoDateTime,
@@ -94,7 +121,8 @@ export interface OperationsOverview {
   readonly integrations: readonly IntegrationConnection[];
 }
 
-export interface OperationsRepository extends ProgramsRepository {
+export interface OperationsRepository
+  extends ProgramsRepository, IdentityRepository, ApplicationsRepository, PortalRepository {
   getOverview(query?: OperationsQuery): Promise<OperationsOverview>;
   listPrograms(query?: OperationsQuery): Promise<readonly Program[]>;
   listProgramInstances(query?: OperationsQuery): Promise<readonly ProgramInstance[]>;
@@ -241,4 +269,250 @@ export interface ProgramsRepository {
   getProgramInstance(programId: Id, instanceId: Id): Promise<ProgramInstance | null>;
   getProgramInstanceDetail(programId: Id, instanceId: Id): Promise<ProgramInstanceDetail | null>;
   listProgramEvents(filters?: ProgramEventFilters): Promise<readonly ProgramEventRow[]>;
+}
+
+// ---------------------------------------------------------------------------
+// Luma 2.0 — identity, applications and the family portal
+//
+// Added to the same contract rather than beside it, for the reason the module
+// README already gives: there should be exactly one interface to reimplement
+// against Supabase.
+//
+// ## Reads and writes
+//
+// Everything above this line is read-only, because Phase 1 and 2 only ever
+// displayed data. The wireframe cannot be: a demo where an application cannot
+// be filled in, submitted, and then found waiting in Operations is a slide
+// deck with extra steps. So a small number of writes are part of the contract.
+//
+// The mock implements them as an overlay on top of the seed data, held in the
+// browser and applied after mount so a server render and the first client
+// render still agree. Reloading keeps the overlay; clearing it resets the
+// demo. A Supabase implementation replaces the overlay with real rows and no
+// call site changes.
+// ---------------------------------------------------------------------------
+
+/** One camp a profile may (or may not) apply to, with the reasoning attached. */
+export interface EligibleInstanceRow {
+  readonly instance: ProgramInstance;
+  readonly programName: string;
+  readonly programSlug: string;
+  readonly region: Region | null;
+  readonly criteria: EligibilityCriteria | null;
+  readonly result: EligibilityResult;
+  /** The open application for this instance, when one exists. */
+  readonly formId: Id | null;
+  readonly deadline: IsoDate | null;
+  /** Set when this profile already has an application in flight here. */
+  readonly existingSubmissionId: Id | null;
+}
+
+/** A profile with everything the portal needs to show it in one row. */
+export interface ProfileSummary {
+  readonly profile: Profile;
+  readonly age: number | null;
+  readonly openApplications: number;
+  readonly acceptedInstances: number;
+  /** Checklist items that are overdue or need action, across every camp. */
+  readonly checklistItemsNeedingAction: number;
+}
+
+/** The family dashboard, assembled so the page joins nothing itself. */
+export interface HouseholdOverview {
+  readonly account: Account;
+  readonly profiles: readonly ProfileSummary[];
+  readonly submissions: readonly SubmissionSummary[];
+  /** Soonest first, across every profile and camp. Drives "what's next". */
+  readonly upcomingDeadlines: readonly PortalDeadline[];
+  readonly invitations: readonly Invitation[];
+}
+
+export interface PortalDeadline {
+  readonly label: string;
+  readonly dueDate: IsoDate;
+  readonly profileId: Id;
+  readonly profileName: string;
+  readonly programName: string;
+  /** Negative when overdue. */
+  readonly daysUntilDue: number;
+  readonly target: ChecklistTarget;
+}
+
+/** An application as the applicant sees it in a list. */
+export interface SubmissionSummary {
+  readonly submission: ApplicationSubmission;
+  readonly programName: string;
+  readonly instanceName: string;
+  readonly profileName: string;
+  readonly deadline: IsoDate | null;
+  /** 0–1, by completed sections. Drives the progress bar. */
+  readonly completion: number;
+}
+
+/** Everything the wizard needs for one application, in one read. */
+export interface SubmissionDetail {
+  readonly submission: ApplicationSubmission;
+  readonly form: ApplicationForm;
+  readonly profile: Profile;
+  readonly account: Account;
+  readonly programName: string;
+  readonly instanceName: string;
+}
+
+/**
+ * An application as a reviewer sees it in the queue.
+ *
+ * `applicantLabel` is deliberately the only identity on the row, so a blind
+ * review can substitute a reference like "Applicant 14" without the table
+ * needing a second shape.
+ */
+export interface ApplicationQueueRow {
+  readonly submission: ApplicationSubmission;
+  readonly applicantLabel: string;
+  readonly programName: string;
+  readonly instanceName: string;
+  readonly regionName: string | null;
+  readonly age: number | null;
+  readonly totalScore: number | null;
+  readonly scoredBy: number;
+  readonly interviewStatus: InterviewStatus | null;
+  readonly decision: DecisionOutcome | null;
+}
+
+export interface ApplicationQueueFilters {
+  readonly programId?: Id;
+  readonly programInstanceId?: Id;
+  readonly regionId?: RegionId;
+  readonly audience?: EligibilityAudience;
+  readonly status?: ApplicationStatus;
+  readonly search?: string;
+  /** Withholds applicant identity from the returned rows. */
+  readonly blind?: boolean;
+}
+
+/** Counts behind the selection screen's cohort view. */
+export interface SelectionBoard {
+  readonly programInstanceId: Id;
+  readonly instanceName: string;
+  readonly programName: string;
+  readonly plannedCapacity: number;
+  readonly rows: readonly ApplicationQueueRow[];
+  readonly countsByStatus: Readonly<Record<ApplicationStatus, number>>;
+  readonly countsByRegion: readonly { readonly label: string; readonly count: number }[];
+  readonly rubric: ScoringRubric | null;
+}
+
+/** A possible duplicate, with only what a resolver needs to decide. */
+export interface MatchReviewRow {
+  readonly review: MatchReview;
+  readonly accountEmail: string;
+  readonly profileName: string;
+}
+
+/** A person as Operations sees them: one record, every thread that reaches it. */
+export interface PersonDirectoryRow {
+  readonly person: Person;
+  readonly accountStatus: Account["status"] | null;
+  readonly programCount: number;
+  readonly openMatchReviews: number;
+}
+
+export interface ChecklistView {
+  readonly profileId: Id;
+  readonly profileName: string;
+  readonly programInstanceId: Id;
+  readonly programName: string;
+  readonly instanceName: string;
+  readonly entries: readonly ChecklistEntry[];
+  readonly completed: number;
+  readonly total: number;
+}
+
+/** Reads and writes for accounts, profiles and the links between them. */
+export interface IdentityRepository {
+  getAccount(accountId: Id): Promise<Account | null>;
+  getHouseholdOverview(accountId: Id): Promise<HouseholdOverview | null>;
+  listProfiles(accountId: Id): Promise<readonly Profile[]>;
+  getProfile(profileId: Id): Promise<Profile | null>;
+  listRelationships(accountId: Id): Promise<readonly PersonRelationship[]>;
+  listAccessGrants(accountId: Id): Promise<readonly RelationshipAccessGrant[]>;
+  listMatchReviews(status?: MatchReview["status"]): Promise<readonly MatchReviewRow[]>;
+  listPersonDirectory(search?: string): Promise<readonly PersonDirectoryRow[]>;
+
+  /** Adds a household member. Returns the profile, already match-checked. */
+  addProfile(accountId: Id, draft: ProfileDraft): Promise<Profile>;
+  updateProfile(profileId: Id, patch: Partial<ProfileDraft>): Promise<Profile>;
+  /**
+   * Runs the matching rules for a profile.
+   *
+   * May link, and may raise a review — but never reveals the candidate to the
+   * requesting user. An uncertain match returns `uncertain` and nothing else.
+   */
+  resolveProfileMatch(profileId: Id): Promise<MatchOutcome>;
+  resolveMatchReview(reviewId: Id, decision: "link" | "reject"): Promise<MatchReview>;
+}
+
+/** The fields a family can set on a profile. Everything else is derived. */
+export interface ProfileDraft {
+  readonly legalFirstName: string;
+  readonly legalLastName: string;
+  readonly preferredName: string | null;
+  readonly dateOfBirth: IsoDate | null;
+  readonly risingSecularGrade: number | null;
+  readonly risingRecGrade: number | null;
+  readonly schoolName: string | null;
+  readonly schoolType: SchoolType | null;
+  readonly languages: readonly LanguageProficiency[];
+  readonly needsTranslator: boolean;
+}
+
+/** Applications, from the applicant's side and the reviewer's. */
+export interface ApplicationsRepository {
+  /** Every instance this profile could apply to, eligible or not, with reasons. */
+  listEligibleInstances(
+    profileId: Id,
+    audience: EligibilityAudience,
+  ): Promise<readonly EligibleInstanceRow[]>;
+  getApplicationForm(formId: Id): Promise<ApplicationForm | null>;
+  listSubmissionsForAccount(accountId: Id): Promise<readonly SubmissionSummary[]>;
+  getSubmissionDetail(submissionId: Id): Promise<SubmissionDetail | null>;
+
+  listApplicationQueue(filters?: ApplicationQueueFilters): Promise<readonly ApplicationQueueRow[]>;
+  getSelectionBoard(programInstanceId: Id): Promise<SelectionBoard | null>;
+  listRubrics(programInstanceId?: Id): Promise<readonly ScoringRubric[]>;
+  listScores(submissionId: Id): Promise<readonly ApplicationScore[]>;
+  listInterviews(programInstanceId?: Id): Promise<readonly Interview[]>;
+
+  /** Starts an application, or returns the existing draft for this pairing. */
+  startApplication(profileId: Id, formId: Id): Promise<ApplicationSubmission>;
+  /** Save-and-resume. Called on every step; never loses a partly-filled form. */
+  saveAnswers(
+    submissionId: Id,
+    answers: readonly ApplicationAnswer[],
+    completedSectionIds: readonly Id[],
+  ): Promise<ApplicationSubmission>;
+  submitApplication(submissionId: Id): Promise<ApplicationSubmission>;
+  withdrawApplication(submissionId: Id): Promise<ApplicationSubmission>;
+  /** The applicant's response to an offer, before the confirm-by date. */
+  confirmPlace(submissionId: Id): Promise<ApplicationSubmission>;
+
+  scoreApplication(
+    submissionId: Id,
+    rubricId: Id,
+    criterionScores: readonly CriterionScore[],
+  ): Promise<ApplicationScore>;
+  /** Bulk decisions: the selection screen applies a status to a set at once. */
+  recordDecisions(
+    submissionIds: readonly Id[],
+    outcome: DecisionOutcome,
+    note?: string,
+  ): Promise<readonly SelectionDecision[]>;
+}
+
+/** The post-acceptance checklist and the family forms behind it. */
+export interface PortalRepository {
+  listChecklists(accountId: Id): Promise<readonly ChecklistView[]>;
+  getChecklist(profileId: Id, programInstanceId: Id): Promise<ChecklistView | null>;
+  /** Demo affordance: marks an item done so the dashboard visibly moves. */
+  completeChecklistItem(definitionId: Id, profileId: Id): Promise<ChecklistProgress>;
 }

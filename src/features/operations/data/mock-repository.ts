@@ -39,6 +39,7 @@ import type {
   UpcomingEventRow,
   UpcomingInstanceRow,
 } from "./repository";
+import { createLuma2RepositorySlice } from "./mock-luma2-repository";
 import {
   compareEvents,
   compareInstances,
@@ -465,6 +466,10 @@ function matchesEventFilters(
 
 export function createMockOperationsRepository(): OperationsRepository {
   return {
+    // Identity, applications and the portal live in their own module: this
+    // file already runs to several hundred lines of Programs joins, and the
+    // Luma 2.0 surfaces are a separate concern reading separate seed data.
+    ...createLuma2RepositorySlice(),
     async getOverview(query?: OperationsQuery): Promise<OperationsOverview> {
       const referenceDate = resolveReferenceDate(query);
 
