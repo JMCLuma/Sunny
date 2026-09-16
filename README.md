@@ -1,24 +1,57 @@
-# Ready To Begin
+# Sunny — the Luma 2.0 demo wireframe
 
-Initialize this project in a paused, empty state. Do not generate features, files, or code. Do not infer a goal. Acknowledge and wait for my instructions.
+A branded, clickable prototype of **Luma 2.0**, the platform merging Jubilee
+Monuments Corporation's two current systems — Luma 1.0 (public site, family
+portal, health review, onsite medical, finance) and IUSA 2.0 (applications,
+prioritization scoring, selection decisions) — into one.
 
-This project was built with [Lovable](https://lovable.dev).
+It runs on invented data. Nothing here is production code, and nothing it does
+reaches a real system.
 
-## Build with Lovable
+## What it is for
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/cf844aed-a5ba-4075-ae46-a2658d9ebeb2).
+The merged BRD describes nineteen domains and the backlog carries 404 stories.
+Against that, the real build is early, and the 09-09 call spent most of its
+time re-deciding the shape of a single form. This exists so there is something
+to look at: leadership can walk the product and react to it, and the
+development team gets screens and a data contract to build against rather than
+a document to interpret.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Where a decision was genuinely open, the wireframe makes one, says so, and
+records where the question came from — see the **Open decisions** panel in the
+bar at the bottom of any page.
 
-## Development
+## Running it
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requires [Bun](https://bun.sh).
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+bun install
+bun run dev
 ```
+
+Then open the app and use the **Viewing as** switcher in the bar at the bottom
+to move between a parent, an applicant, a reviewer, a camp lead, the national
+team, and a senior administrator. Permissions are real: some personas are
+refused on some pages, which is the point.
+
+`DEMO.md` is a presenter's script. `WIREFRAME.md` is the route index and an
+honest account of what is real and what is drawn.
+
+```sh
+bun test          # domain logic, authorization scoping, seed integrity
+bun run lint
+bunx tsc --noEmit
+bun run build
+```
+
+## Relationship to the real repository
+
+Built on the Operations foundation from `JMCLuma/luma` (branch
+`feature/luma-programs`), so the conventions match and screens can be lifted
+back across. The mock repository in `src/features/operations/data/` doubles as
+the data contract: implementing `OperationsRepository` against Supabase should
+require no changes to any page component.
+
+This repository is **not** connected to Lovable and has no deploy pipeline. Do
+not point it at the production Supabase project.
