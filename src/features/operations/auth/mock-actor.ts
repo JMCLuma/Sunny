@@ -20,6 +20,8 @@ const demoGrants: readonly PermissionGrant[] = [
   // Read access across every Operations module — enough to load each route.
   { permission: "operations.view", scope: "all" },
   { permission: "programs.view", scope: "all" },
+  { permission: "applications.view", scope: "all" },
+  { permission: "people.view", scope: "all" },
   { permission: "finance.view", scope: "all" },
   { permission: "compliance.view", scope: "all" },
   { permission: "vendors.view", scope: "all" },
@@ -34,6 +36,8 @@ const demoGrants: readonly PermissionGrant[] = [
   { permission: "compliance.approve", scope: "all" },
   { permission: "insights.export", scope: "all" },
   { permission: "admin.manage", scope: "all" },
+  { permission: "applications.approve", scope: "all" },
+  { permission: "people.manage", scope: "all" },
 ];
 
 export const DEMO_ADMINISTRATOR: Actor = {

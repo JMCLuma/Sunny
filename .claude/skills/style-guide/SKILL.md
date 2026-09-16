@@ -19,20 +19,20 @@ landing page).
 
 ## Colors (CSS variables, defined in `:root`)
 
-| Variable | Hex | Use |
-|---|---|---|
-| `--green` | `#007041` | Primary actions, headings, form accents |
-| `--red` | `#B83D26` | Required-field asterisks only |
-| `--orange` | `#D97707` | Focus rings, hover states |
-| `--yellow` | `#F3BE44` | Nav-bar buttons, progress-bar current step |
-| `--sky` | `#84BFCA` | Secondary accents |
-| `--gray` | `#4F4F4F` | Body text, labels |
-| `--white` | `#FFFFFF` | Card backgrounds |
-| `--black` | `#000000` | Masthead border |
-| `--mint` | `#DBF0E9` | Callout/note backgrounds |
-| `--gray-light` | `#E9E9E9` | Borders, dividers |
-| `--page-bg` | `#FAF9F3` | Page background |
-| `--green-tint` | `#EAF3EE` | Secondary-button hover |
+| Variable       | Hex       | Use                                        |
+| -------------- | --------- | ------------------------------------------ |
+| `--green`      | `#007041` | Primary actions, headings, form accents    |
+| `--red`        | `#B83D26` | Required-field asterisks only              |
+| `--orange`     | `#D97707` | Focus rings, hover states                  |
+| `--yellow`     | `#F3BE44` | Nav-bar buttons, progress-bar current step |
+| `--sky`        | `#84BFCA` | Secondary accents                          |
+| `--gray`       | `#4F4F4F` | Body text, labels                          |
+| `--white`      | `#FFFFFF` | Card backgrounds                           |
+| `--black`      | `#000000` | Masthead border                            |
+| `--mint`       | `#DBF0E9` | Callout/note backgrounds                   |
+| `--gray-light` | `#E9E9E9` | Borders, dividers                          |
+| `--page-bg`    | `#FAF9F3` | Page background                            |
+| `--green-tint` | `#EAF3EE` | Secondary-button hover                     |
 
 A few supporting values are not yet named variables: `#005c35` (primary
 button hover), `#A6A6A6` (placeholder text). Consider promoting these to
@@ -42,7 +42,7 @@ variables if reused elsewhere.
 
 - **Font:** Gotham (embedded as base64 `@font-face` in `styles.css` - Book,
   Medium, and Bold weights). Fallback stack: `'Helvetica Neue', Arial,
-  sans-serif`.
+sans-serif`.
 - Body text: `0.92-1rem`
 - Headings scale with `clamp()` for responsiveness.
 

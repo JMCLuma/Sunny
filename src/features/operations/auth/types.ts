@@ -13,6 +13,8 @@ import type { Id } from "../domain";
 export type OperationsResource =
   | "operations"
   | "programs"
+  | "applications"
+  | "people"
   | "finance"
   | "compliance"
   | "vendors"

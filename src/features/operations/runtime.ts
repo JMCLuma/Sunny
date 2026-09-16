@@ -1,4 +1,6 @@
-import { createAuthorizationService, DEMO_ADMINISTRATOR, type AuthorizationService } from "./auth";
+import { getPersona } from "@/features/demo/personas";
+
+import { createAuthorizationService, type AuthorizationService } from "./auth";
 import { createMockOperationsRepository, type OperationsRepository } from "./data";
 
 /**
@@ -32,11 +34,23 @@ import { createMockOperationsRepository, type OperationsRepository } from "./dat
 export interface OperationsRuntime {
   readonly authorization: AuthorizationService;
   readonly repository: OperationsRepository;
+  /** Which demo persona built this actor. Chrome reads it; logic must not. */
+  readonly personaId: string;
+  /** The household a family persona is signed in to; null for staff personas. */
+  readonly accountId: string | null;
 }
 
-export function createOperationsRuntime(): OperationsRuntime {
+/**
+ * `personaId` stands in for "who is signed in". It comes from a cookie read
+ * per request, which is why the runtime is still built per navigation and
+ * never cached at module scope — exactly where a Supabase session will slot in.
+ */
+export function createOperationsRuntime(personaId?: string | null): OperationsRuntime {
+  const persona = getPersona(personaId);
   return {
-    authorization: createAuthorizationService(DEMO_ADMINISTRATOR),
+    authorization: createAuthorizationService(persona.actor),
     repository: createMockOperationsRepository(),
+    personaId: persona.id,
+    accountId: persona.accountId,
   };
 }

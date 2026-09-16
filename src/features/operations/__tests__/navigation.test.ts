@@ -10,6 +10,8 @@ describe("module registry", () => {
       [
         "/operations",
         "/operations/programs",
+        "/operations/applications",
+        "/operations/people",
         "/operations/finance",
         "/operations/compliance",
         "/operations/vendors",

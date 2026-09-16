@@ -18,6 +18,8 @@ import type {
 export const OPERATIONS_RESOURCES = [
   "operations",
   "programs",
+  "applications",
+  "people",
   "finance",
   "compliance",
   "vendors",

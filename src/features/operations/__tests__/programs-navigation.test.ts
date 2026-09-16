@@ -60,9 +60,9 @@ describe("breadcrumbs and page title", () => {
 
     assert.deepEqual(
       page.crumbs.map((crumb) => crumb.label),
-      ["Operations", "Programs & people"],
+      ["Operations", "Programs"],
     );
-    assert.equal(page.title, "Programs & people");
+    assert.equal(page.title, "Programs");
     assert.equal(page.description, getOperationsModule("programs").purpose);
     // The final crumb is the current page, so it must not be a link.
     assert.equal(page.crumbs[page.crumbs.length - 1]?.target, undefined);
@@ -81,7 +81,7 @@ describe("breadcrumbs and page title", () => {
 
     assert.deepEqual(
       page.crumbs.map((crumb) => crumb.label),
-      ["Operations", "Programs & people", "Event schedule"],
+      ["Operations", "Programs", "Event schedule"],
     );
     assert.equal(page.title, "Event schedule");
     assert.equal(page.description, null);
@@ -105,7 +105,7 @@ describe("breadcrumbs and page title", () => {
 
     assert.deepEqual(
       page.crumbs.map((crumb) => crumb.label),
-      ["Operations", "Programs & people", "Mosaic", "Mosaic Summer 2026"],
+      ["Operations", "Programs", "Mosaic", "Mosaic Summer 2026"],
     );
     assert.equal(page.title, "Mosaic Summer 2026");
     assert.deepEqual(page.crumbs[2]?.target, { kind: "program", programId: "prog_mosaic" });
@@ -121,7 +121,7 @@ describe("breadcrumbs and page title", () => {
 
     assert.deepEqual(
       page.crumbs.map((crumb) => crumb.label),
-      ["Operations", "Programs & people"],
+      ["Operations", "Programs"],
     );
   });
 });

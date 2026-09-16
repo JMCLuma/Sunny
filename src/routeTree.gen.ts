@@ -19,11 +19,13 @@ import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
 import { Route as PublicTermsRouteImport } from './routes/_public/terms'
 import { Route as OperationsIndexRouteImport } from './routes/operations/index'
 import { Route as OperationsAdminRouteImport } from './routes/operations/admin'
+import { Route as OperationsApplicationsRouteImport } from './routes/operations/applications'
 import { Route as OperationsComplianceRouteImport } from './routes/operations/compliance'
 import { Route as OperationsDocumentsRouteImport } from './routes/operations/documents'
 import { Route as OperationsFinanceRouteImport } from './routes/operations/finance'
 import { Route as OperationsInsightsRouteImport } from './routes/operations/insights'
 import { Route as OperationsMarketingRouteImport } from './routes/operations/marketing'
+import { Route as OperationsPeopleRouteImport } from './routes/operations/people'
 import { Route as OperationsRiskRouteImport } from './routes/operations/risk'
 import { Route as OperationsVendorsRouteImport } from './routes/operations/vendors'
 import { Route as OperationsProgramsIndexRouteImport } from './routes/operations/programs/index'
@@ -81,6 +83,11 @@ const OperationsAdminRoute = OperationsAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => OperationsRouteRoute,
 } as any)
+const OperationsApplicationsRoute = OperationsApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => OperationsRouteRoute,
+} as any)
 const OperationsComplianceRoute = OperationsComplianceRouteImport.update({
   id: '/compliance',
   path: '/compliance',
@@ -104,6 +111,11 @@ const OperationsInsightsRoute = OperationsInsightsRouteImport.update({
 const OperationsMarketingRoute = OperationsMarketingRouteImport.update({
   id: '/marketing',
   path: '/marketing',
+  getParentRoute: () => OperationsRouteRoute,
+} as any)
+const OperationsPeopleRoute = OperationsPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
   getParentRoute: () => OperationsRouteRoute,
 } as any)
 const OperationsRiskRoute = OperationsRiskRouteImport.update({
@@ -155,11 +167,13 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PublicPrivacyRoute
   '/terms': typeof PublicTermsRoute
   '/operations/admin': typeof OperationsAdminRoute
+  '/operations/applications': typeof OperationsApplicationsRoute
   '/operations/compliance': typeof OperationsComplianceRoute
   '/operations/documents': typeof OperationsDocumentsRoute
   '/operations/finance': typeof OperationsFinanceRoute
   '/operations/insights': typeof OperationsInsightsRoute
   '/operations/marketing': typeof OperationsMarketingRoute
+  '/operations/people': typeof OperationsPeopleRoute
   '/operations/risk': typeof OperationsRiskRoute
   '/operations/vendors': typeof OperationsVendorsRoute
   '/operations/': typeof OperationsIndexRoute
@@ -176,11 +190,13 @@ export interface FileRoutesByTo {
   '/privacy': typeof PublicPrivacyRoute
   '/terms': typeof PublicTermsRoute
   '/operations/admin': typeof OperationsAdminRoute
+  '/operations/applications': typeof OperationsApplicationsRoute
   '/operations/compliance': typeof OperationsComplianceRoute
   '/operations/documents': typeof OperationsDocumentsRoute
   '/operations/finance': typeof OperationsFinanceRoute
   '/operations/insights': typeof OperationsInsightsRoute
   '/operations/marketing': typeof OperationsMarketingRoute
+  '/operations/people': typeof OperationsPeopleRoute
   '/operations/risk': typeof OperationsRiskRoute
   '/operations/vendors': typeof OperationsVendorsRoute
   '/': typeof PublicIndexRoute
@@ -200,11 +216,13 @@ export interface FileRoutesById {
   '/_public/privacy': typeof PublicPrivacyRoute
   '/_public/terms': typeof PublicTermsRoute
   '/operations/admin': typeof OperationsAdminRoute
+  '/operations/applications': typeof OperationsApplicationsRoute
   '/operations/compliance': typeof OperationsComplianceRoute
   '/operations/documents': typeof OperationsDocumentsRoute
   '/operations/finance': typeof OperationsFinanceRoute
   '/operations/insights': typeof OperationsInsightsRoute
   '/operations/marketing': typeof OperationsMarketingRoute
+  '/operations/people': typeof OperationsPeopleRoute
   '/operations/risk': typeof OperationsRiskRoute
   '/operations/vendors': typeof OperationsVendorsRoute
   '/_public/': typeof PublicIndexRoute
@@ -226,11 +244,13 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/operations/admin'
+    | '/operations/applications'
     | '/operations/compliance'
     | '/operations/documents'
     | '/operations/finance'
     | '/operations/insights'
     | '/operations/marketing'
+    | '/operations/people'
     | '/operations/risk'
     | '/operations/vendors'
     | '/operations/'
@@ -247,11 +267,13 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/operations/admin'
+    | '/operations/applications'
     | '/operations/compliance'
     | '/operations/documents'
     | '/operations/finance'
     | '/operations/insights'
     | '/operations/marketing'
+    | '/operations/people'
     | '/operations/risk'
     | '/operations/vendors'
     | '/'
@@ -270,11 +292,13 @@ export interface FileRouteTypes {
     | '/_public/privacy'
     | '/_public/terms'
     | '/operations/admin'
+    | '/operations/applications'
     | '/operations/compliance'
     | '/operations/documents'
     | '/operations/finance'
     | '/operations/insights'
     | '/operations/marketing'
+    | '/operations/people'
     | '/operations/risk'
     | '/operations/vendors'
     | '/_public/'
@@ -363,6 +387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperationsAdminRouteImport
       parentRoute: typeof OperationsRouteRoute
     }
+    '/operations/applications': {
+      id: '/operations/applications'
+      path: '/applications'
+      fullPath: '/operations/applications'
+      preLoaderRoute: typeof OperationsApplicationsRouteImport
+      parentRoute: typeof OperationsRouteRoute
+    }
     '/operations/compliance': {
       id: '/operations/compliance'
       path: '/compliance'
@@ -396,6 +427,13 @@ declare module '@tanstack/react-router' {
       path: '/marketing'
       fullPath: '/operations/marketing'
       preLoaderRoute: typeof OperationsMarketingRouteImport
+      parentRoute: typeof OperationsRouteRoute
+    }
+    '/operations/people': {
+      id: '/operations/people'
+      path: '/people'
+      fullPath: '/operations/people'
+      preLoaderRoute: typeof OperationsPeopleRouteImport
       parentRoute: typeof OperationsRouteRoute
     }
     '/operations/risk': {
@@ -470,11 +508,13 @@ const OperationsProgramsProgramIdRouteRouteWithChildren =
 
 interface OperationsRouteRouteChildren {
   OperationsAdminRoute: typeof OperationsAdminRoute
+  OperationsApplicationsRoute: typeof OperationsApplicationsRoute
   OperationsComplianceRoute: typeof OperationsComplianceRoute
   OperationsDocumentsRoute: typeof OperationsDocumentsRoute
   OperationsFinanceRoute: typeof OperationsFinanceRoute
   OperationsInsightsRoute: typeof OperationsInsightsRoute
   OperationsMarketingRoute: typeof OperationsMarketingRoute
+  OperationsPeopleRoute: typeof OperationsPeopleRoute
   OperationsRiskRoute: typeof OperationsRiskRoute
   OperationsVendorsRoute: typeof OperationsVendorsRoute
   OperationsIndexRoute: typeof OperationsIndexRoute
@@ -485,11 +525,13 @@ interface OperationsRouteRouteChildren {
 
 const OperationsRouteRouteChildren: OperationsRouteRouteChildren = {
   OperationsAdminRoute: OperationsAdminRoute,
+  OperationsApplicationsRoute: OperationsApplicationsRoute,
   OperationsComplianceRoute: OperationsComplianceRoute,
   OperationsDocumentsRoute: OperationsDocumentsRoute,
   OperationsFinanceRoute: OperationsFinanceRoute,
   OperationsInsightsRoute: OperationsInsightsRoute,
   OperationsMarketingRoute: OperationsMarketingRoute,
+  OperationsPeopleRoute: OperationsPeopleRoute,
   OperationsRiskRoute: OperationsRiskRoute,
   OperationsVendorsRoute: OperationsVendorsRoute,
   OperationsIndexRoute: OperationsIndexRoute,

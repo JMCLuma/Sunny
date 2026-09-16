@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  ClipboardList,
   FileText,
   Handshake,
   LayoutDashboard,
@@ -7,6 +8,7 @@ import {
   Settings,
   ShieldCheck,
   TriangleAlert,
+  UserSearch,
   Users,
   Wallet,
   type LucideIcon,
@@ -27,6 +29,8 @@ import type { AccessRequest, AuthorizedItem } from "./auth";
 export type OperationsModuleId =
   | "overview"
   | "programs"
+  | "applications"
+  | "people"
   | "finance"
   | "compliance"
   | "vendors"
@@ -58,6 +62,8 @@ export const OPERATIONS_ROOT_PATH = "/operations";
 export type OperationsModulePath =
   | "/operations"
   | "/operations/programs"
+  | "/operations/applications"
+  | "/operations/people"
   | "/operations/finance"
   | "/operations/compliance"
   | "/operations/vendors"
@@ -81,10 +87,28 @@ export const OPERATIONS_MODULES: readonly OperationsModule[] = [
     id: "programs",
     routeId: "/operations/programs",
     path: "/operations/programs",
-    label: "Programs & people",
-    purpose: "Programs, their sessions and events, and the people assigned to them.",
+    label: "Programs",
+    purpose: "Programs, their sessions and the events that serve them.",
     icon: Users,
     access: { resource: "programs", action: "view", scope: "any" },
+  },
+  {
+    id: "applications",
+    routeId: "/operations/applications",
+    path: "/operations/applications",
+    label: "Applications & selection",
+    purpose: "Applications as they arrive, how they are scored, and who gets in.",
+    icon: ClipboardList,
+    access: { resource: "applications", action: "view", scope: "any" },
+  },
+  {
+    id: "people",
+    routeId: "/operations/people",
+    path: "/operations/people",
+    label: "People",
+    purpose: "One record per person, the accounts linked to it, and matches awaiting review.",
+    icon: UserSearch,
+    access: { resource: "people", action: "view", scope: "any" },
   },
   {
     id: "finance",

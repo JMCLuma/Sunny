@@ -18,6 +18,23 @@ export type * from "./risk";
 export type * from "./tasks";
 export type * from "./audit";
 export type * from "./integrations";
+export type * from "./identity";
+export type * from "./eligibility";
+export type * from "./application";
+export type * from "./checklist";
 
 /** The one value the domain exports: a fixed presentation order for readiness. */
 export { READINESS_AREAS } from "./readiness";
+
+/** Eligibility ships behaviour, not just shapes: one evaluator, used by the
+ * applicant's camp list and by Operations' criteria editor alike, so the two
+ * can never disagree about who may apply. */
+export {
+  evaluateEligibility,
+  describeCriteria,
+  describeRule,
+  formatGrade,
+  ageAt,
+} from "./eligibility";
+
+export { ACTIONABLE_APPLICATION_STATUSES } from "./application";
