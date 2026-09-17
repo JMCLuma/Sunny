@@ -43,6 +43,30 @@ inspects the URL to decide what chrome to draw.
   never hard-coded hex. The palette is defined once in `src/styles.css`.
 - `src/routeTree.gen.ts` is generated. Never edit it by hand.
 
+## Model policy for parallel agents
+
+**The orchestrating session is the only Opus agent.** Every subagent runs on
+Claude Sonnet 5 (`claude-sonnet-5`).
+
+This is a cost rule, and the numbers are the reason. Per million tokens:
+
+| Model | Input | Output |
+| --- | --- | --- |
+| Claude Sonnet 5 | $2 | $10 |
+| Claude Opus 5 | $5 | $25 |
+| Claude Fable 5.1 | $10 | $50 |
+
+Sonnet is a fifth of Fable and under half of Opus, so Fable is never the
+efficient choice for a subagent — despite the name it is the most expensive
+model available, above Opus tier. Reach for it only if someone explicitly
+asks for it.
+
+This rule exists because ignoring it has already cost a day: five concurrent
+Opus subagents exhausted the session limit mid-build and terminated all five
+at once. The orchestrator holds the whole picture and the architectural
+decisions, so it earns Opus; the subagents implement against a contract that
+is already written, which Sonnet does well.
+
 ## Comments
 
 The code carries more explanation than usual, deliberately: this repository is
