@@ -2,17 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { requireAccess } from "@/features/operations/auth";
 import { OperationsRouteError } from "@/features/operations/components";
+import { ModuleOutlinePage } from "@/features/operations/pages/module-pages/module-outline-page";
 import { getOperationsModule } from "@/features/operations/navigation";
-import { ModulePage } from "@/features/operations/pages";
+
+const MODULE = getOperationsModule("documents");
 
 export const Route = createFileRoute("/operations/documents")({
   beforeLoad: ({ context }) => {
-    requireAccess(context.operations.authorization, getOperationsModule("documents").access);
+    requireAccess(context.operations.authorization, MODULE.access);
   },
-  component: DocumentsRoute,
+  component: () => <ModuleOutlinePage module={MODULE} />,
   errorComponent: OperationsRouteError,
 });
-
-function DocumentsRoute() {
-  return <ModulePage moduleId="documents" />;
-}

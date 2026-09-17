@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import type { ComponentProps } from "react";
 import { useState } from "react";
 import { Check, ChevronDown, Globe, Moon, Sun } from "lucide-react";
@@ -8,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DEFAULT_CAMP_SEARCH } from "@/features/public/camp-search";
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 
@@ -48,6 +50,9 @@ function Pill({ children, className, variant = "ghost", ...props }: PillProps) {
     </button>
   );
 }
+
+const pillClasses = (variant: keyof typeof pillVariants = "ghost", className?: string) =>
+  cn(pillBase, pillVariants[variant], className);
 
 function LanguageMenu() {
   const [selected, setSelected] = useState<(typeof LANGUAGES)[number]>("English");
@@ -103,8 +108,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-3">
-        <a
-          href="#"
+        <Link
+          to="/"
           aria-label="Luma home"
           className="flex items-center gap-3 text-foreground no-underline"
         >
@@ -113,16 +118,22 @@ export function SiteHeader() {
             <span className="text-lg font-bold tracking-tight text-foreground">Luma</span>
             <span className="text-xs text-muted-foreground">by Jubilee Monuments Corp.</span>
           </span>
-        </a>
+        </Link>
         <nav className="flex items-center justify-end gap-2">
-          <Pill variant="ghost" className="hidden md:inline-flex">
-            Programs
-          </Pill>
+          <Link
+            to="/camps"
+            search={DEFAULT_CAMP_SEARCH}
+            className={pillClasses("ghost", "hidden md:inline-flex")}
+          >
+            Camps
+          </Link>
           <LanguageMenu />
-          <Pill variant="outline" className="hidden sm:inline-flex">
+          <Link to="/my" className={pillClasses("outline", "hidden sm:inline-flex")}>
             Sign In
-          </Pill>
-          <Pill variant="primary">Donate</Pill>
+          </Link>
+          <Link to="/donate" className={pillClasses("primary")}>
+            Donate
+          </Link>
           <ThemeToggle />
         </nav>
       </div>
