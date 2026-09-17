@@ -45,7 +45,9 @@ import { Route as PublicCampsIndexRouteImport } from './routes/_public/camps/ind
 import { Route as PublicCampsSlugRouteImport } from './routes/_public/camps/$slug'
 import { Route as MyApplicationsIndexRouteImport } from './routes/my/applications/index'
 import { Route as MyApplicationsSubmissionIdRouteImport } from './routes/my/applications.$submissionId'
+import { Route as MyHouseholdIndexRouteImport } from './routes/my/household.index'
 import { Route as MyHouseholdProfileIdRouteImport } from './routes/my/household.$profileId'
+import { Route as MyProgramsIndexRouteImport } from './routes/my/programs.index'
 import { Route as MyProgramsInstanceIdRouteImport } from './routes/my/programs.$instanceId'
 import { Route as OperationsApplicationsIndexRouteImport } from './routes/operations/applications/index'
 import { Route as OperationsApplicationsSubmissionIdRouteImport } from './routes/operations/applications/$submissionId'
@@ -239,10 +241,20 @@ const MyApplicationsSubmissionIdRoute =
     path: '/$submissionId',
     getParentRoute: () => MyApplicationsRoute,
   } as any)
+const MyHouseholdIndexRoute = MyHouseholdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MyHouseholdRoute,
+} as any)
 const MyHouseholdProfileIdRoute = MyHouseholdProfileIdRouteImport.update({
   id: '/$profileId',
   path: '/$profileId',
   getParentRoute: () => MyHouseholdRoute,
+} as any)
+const MyProgramsIndexRoute = MyProgramsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MyProgramsRoute,
 } as any)
 const MyProgramsInstanceIdRoute = MyProgramsInstanceIdRouteImport.update({
   id: '/$instanceId',
@@ -360,6 +372,8 @@ export interface FileRoutesByFullPath {
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
   '/camps/': typeof PublicCampsIndexRoute
   '/my/applications/': typeof MyApplicationsIndexRoute
+  '/my/household/': typeof MyHouseholdIndexRoute
+  '/my/programs/': typeof MyProgramsIndexRoute
   '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
@@ -376,9 +390,7 @@ export interface FileRoutesByTo {
   '/terms': typeof PublicTermsRoute
   '/my/apply': typeof MyApplyRoute
   '/my/health': typeof MyHealthRoute
-  '/my/household': typeof MyHouseholdRouteWithChildren
   '/my/payment': typeof MyPaymentRoute
-  '/my/programs': typeof MyProgramsRouteWithChildren
   '/my/travel': typeof MyTravelRoute
   '/my/waivers': typeof MyWaiversRoute
   '/operations/admin': typeof OperationsAdminRoute
@@ -405,6 +417,8 @@ export interface FileRoutesByTo {
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
   '/camps': typeof PublicCampsIndexRoute
   '/my/applications': typeof MyApplicationsIndexRoute
+  '/my/household': typeof MyHouseholdIndexRoute
+  '/my/programs': typeof MyProgramsIndexRoute
   '/operations/applications': typeof OperationsApplicationsIndexRoute
   '/operations/programs': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdIndexRoute
@@ -457,6 +471,8 @@ export interface FileRoutesById {
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
   '/_public/camps/': typeof PublicCampsIndexRoute
   '/my/applications/': typeof MyApplicationsIndexRoute
+  '/my/household/': typeof MyHouseholdIndexRoute
+  '/my/programs/': typeof MyProgramsIndexRoute
   '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
@@ -509,6 +525,8 @@ export interface FileRouteTypes {
     | '/operations/programs/events'
     | '/camps/'
     | '/my/applications/'
+    | '/my/household/'
+    | '/my/programs/'
     | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
@@ -525,9 +543,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/my/apply'
     | '/my/health'
-    | '/my/household'
     | '/my/payment'
-    | '/my/programs'
     | '/my/travel'
     | '/my/waivers'
     | '/operations/admin'
@@ -554,6 +570,8 @@ export interface FileRouteTypes {
     | '/operations/programs/events'
     | '/camps'
     | '/my/applications'
+    | '/my/household'
+    | '/my/programs'
     | '/operations/applications'
     | '/operations/programs'
     | '/operations/programs/$programId'
@@ -605,6 +623,8 @@ export interface FileRouteTypes {
     | '/operations/programs/events'
     | '/_public/camps/'
     | '/my/applications/'
+    | '/my/household/'
+    | '/my/programs/'
     | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
@@ -874,12 +894,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyApplicationsSubmissionIdRouteImport
       parentRoute: typeof MyApplicationsRoute
     }
+    '/my/household/': {
+      id: '/my/household/'
+      path: '/'
+      fullPath: '/my/household/'
+      preLoaderRoute: typeof MyHouseholdIndexRouteImport
+      parentRoute: typeof MyHouseholdRoute
+    }
     '/my/household/$profileId': {
       id: '/my/household/$profileId'
       path: '/$profileId'
       fullPath: '/my/household/$profileId'
       preLoaderRoute: typeof MyHouseholdProfileIdRouteImport
       parentRoute: typeof MyHouseholdRoute
+    }
+    '/my/programs/': {
+      id: '/my/programs/'
+      path: '/'
+      fullPath: '/my/programs/'
+      preLoaderRoute: typeof MyProgramsIndexRouteImport
+      parentRoute: typeof MyProgramsRoute
     }
     '/my/programs/$instanceId': {
       id: '/my/programs/$instanceId'
@@ -1092,10 +1126,12 @@ const MyApplicationsRouteWithChildren = MyApplicationsRoute._addFileChildren(
 
 interface MyHouseholdRouteChildren {
   MyHouseholdProfileIdRoute: typeof MyHouseholdProfileIdRoute
+  MyHouseholdIndexRoute: typeof MyHouseholdIndexRoute
 }
 
 const MyHouseholdRouteChildren: MyHouseholdRouteChildren = {
   MyHouseholdProfileIdRoute: MyHouseholdProfileIdRoute,
+  MyHouseholdIndexRoute: MyHouseholdIndexRoute,
 }
 
 const MyHouseholdRouteWithChildren = MyHouseholdRoute._addFileChildren(
@@ -1104,10 +1140,12 @@ const MyHouseholdRouteWithChildren = MyHouseholdRoute._addFileChildren(
 
 interface MyProgramsRouteChildren {
   MyProgramsInstanceIdRoute: typeof MyProgramsInstanceIdRoute
+  MyProgramsIndexRoute: typeof MyProgramsIndexRoute
 }
 
 const MyProgramsRouteChildren: MyProgramsRouteChildren = {
   MyProgramsInstanceIdRoute: MyProgramsInstanceIdRoute,
+  MyProgramsIndexRoute: MyProgramsIndexRoute,
 }
 
 const MyProgramsRouteWithChildren = MyProgramsRoute._addFileChildren(
