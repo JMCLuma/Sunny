@@ -14,6 +14,7 @@ import type {
   EligibilityAudience,
   EligibilityCriteria,
   EligibilityResult,
+  EligibilitySubject,
   Id,
   Interview,
   InterviewStatus,
@@ -479,6 +480,27 @@ export interface ApplicationsRepository {
 
   listApplicationQueue(filters?: ApplicationQueueFilters): Promise<readonly ApplicationQueueRow[]>;
   getSelectionBoard(programInstanceId: Id): Promise<SelectionBoard | null>;
+  /**
+   * The criteria themselves, for screens that show or edit the rules rather
+   * than apply them — the camp pages and Operations' criteria editor.
+   */
+  listEligibilityCriteria(filters?: {
+    readonly programId?: Id;
+    readonly programInstanceId?: Id;
+    readonly audience?: EligibilityAudience;
+  }): Promise<readonly EligibilityCriteria[]>;
+  /**
+   * Eligibility for a subject that is not a stored profile.
+   *
+   * The public camp finder has nobody signed in: a visitor types an age and a
+   * region and wants to know which camps are open to them. Running that
+   * through the same evaluator as the signed-in path is the point — a family
+   * must not be told one thing before they register and another after.
+   */
+  evaluateEligibilityForSubject(
+    subject: EligibilitySubject,
+    audience: EligibilityAudience,
+  ): Promise<readonly EligibleInstanceRow[]>;
   listRubrics(programInstanceId?: Id): Promise<readonly ScoringRubric[]>;
   listScores(submissionId: Id): Promise<readonly ApplicationScore[]>;
   listInterviews(programInstanceId?: Id): Promise<readonly Interview[]>;

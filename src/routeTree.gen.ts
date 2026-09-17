@@ -17,7 +17,6 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
-import { Route as PublicCampsRouteImport } from './routes/_public/camps'
 import { Route as PublicContactRouteImport } from './routes/_public/contact'
 import { Route as PublicDonateRouteImport } from './routes/_public/donate'
 import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
@@ -42,7 +41,8 @@ import { Route as OperationsMarketingRouteImport } from './routes/operations/mar
 import { Route as OperationsPeopleRouteImport } from './routes/operations/people'
 import { Route as OperationsRiskRouteImport } from './routes/operations/risk'
 import { Route as OperationsVendorsRouteImport } from './routes/operations/vendors'
-import { Route as PublicCampsSlugRouteImport } from './routes/_public/camps.$slug'
+import { Route as PublicCampsIndexRouteImport } from './routes/_public/camps/index'
+import { Route as PublicCampsSlugRouteImport } from './routes/_public/camps/$slug'
 import { Route as MyApplicationsSubmissionIdRouteImport } from './routes/my/applications.$submissionId'
 import { Route as MyHouseholdProfileIdRouteImport } from './routes/my/household.$profileId'
 import { Route as MyProgramsInstanceIdRouteImport } from './routes/my/programs.$instanceId'
@@ -95,11 +95,6 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
 const PublicAboutRoute = PublicAboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicCampsRoute = PublicCampsRouteImport.update({
-  id: '/camps',
-  path: '/camps',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicContactRoute = PublicContactRouteImport.update({
@@ -222,10 +217,15 @@ const OperationsVendorsRoute = OperationsVendorsRouteImport.update({
   path: '/vendors',
   getParentRoute: () => OperationsRouteRoute,
 } as any)
+const PublicCampsIndexRoute = PublicCampsIndexRouteImport.update({
+  id: '/camps/',
+  path: '/camps/',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicCampsSlugRoute = PublicCampsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PublicCampsRoute,
+  id: '/camps/$slug',
+  path: '/camps/$slug',
+  getParentRoute: () => PublicRoute,
 } as any)
 const MyApplicationsSubmissionIdRoute =
   MyApplicationsSubmissionIdRouteImport.update({
@@ -317,7 +317,6 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/verify-email': typeof VerifyEmailRoute
   '/about': typeof PublicAboutRoute
-  '/camps': typeof PublicCampsRouteWithChildren
   '/contact': typeof PublicContactRoute
   '/donate': typeof PublicDonateRoute
   '/privacy': typeof PublicPrivacyRoute
@@ -353,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/operations/applications/review': typeof OperationsApplicationsReviewRoute
   '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/camps/': typeof PublicCampsIndexRoute
   '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
@@ -363,7 +363,6 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/verify-email': typeof VerifyEmailRoute
   '/about': typeof PublicAboutRoute
-  '/camps': typeof PublicCampsRouteWithChildren
   '/contact': typeof PublicContactRoute
   '/donate': typeof PublicDonateRoute
   '/privacy': typeof PublicPrivacyRoute
@@ -398,6 +397,7 @@ export interface FileRoutesByTo {
   '/operations/applications/review': typeof OperationsApplicationsReviewRoute
   '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/camps': typeof PublicCampsIndexRoute
   '/operations/applications': typeof OperationsApplicationsIndexRoute
   '/operations/programs': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdIndexRoute
@@ -412,7 +412,6 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/verify-email': typeof VerifyEmailRoute
   '/_public/about': typeof PublicAboutRoute
-  '/_public/camps': typeof PublicCampsRouteWithChildren
   '/_public/contact': typeof PublicContactRoute
   '/_public/donate': typeof PublicDonateRoute
   '/_public/privacy': typeof PublicPrivacyRoute
@@ -449,6 +448,7 @@ export interface FileRoutesById {
   '/operations/applications/review': typeof OperationsApplicationsReviewRoute
   '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/_public/camps/': typeof PublicCampsIndexRoute
   '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
@@ -464,7 +464,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/verify-email'
     | '/about'
-    | '/camps'
     | '/contact'
     | '/donate'
     | '/privacy'
@@ -500,6 +499,7 @@ export interface FileRouteTypes {
     | '/operations/applications/review'
     | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/camps/'
     | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
@@ -510,7 +510,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/verify-email'
     | '/about'
-    | '/camps'
     | '/contact'
     | '/donate'
     | '/privacy'
@@ -545,6 +544,7 @@ export interface FileRouteTypes {
     | '/operations/applications/review'
     | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/camps'
     | '/operations/applications'
     | '/operations/programs'
     | '/operations/programs/$programId'
@@ -558,7 +558,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/verify-email'
     | '/_public/about'
-    | '/_public/camps'
     | '/_public/contact'
     | '/_public/donate'
     | '/_public/privacy'
@@ -595,6 +594,7 @@ export interface FileRouteTypes {
     | '/operations/applications/review'
     | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/_public/camps/'
     | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
@@ -666,13 +666,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof PublicAboutRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/camps': {
-      id: '/_public/camps'
-      path: '/camps'
-      fullPath: '/camps'
-      preLoaderRoute: typeof PublicCampsRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/contact': {
@@ -843,12 +836,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperationsVendorsRouteImport
       parentRoute: typeof OperationsRouteRoute
     }
+    '/_public/camps/': {
+      id: '/_public/camps/'
+      path: '/camps'
+      fullPath: '/camps/'
+      preLoaderRoute: typeof PublicCampsIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/camps/$slug': {
       id: '/_public/camps/$slug'
-      path: '/$slug'
+      path: '/camps/$slug'
       fullPath: '/camps/$slug'
       preLoaderRoute: typeof PublicCampsSlugRouteImport
-      parentRoute: typeof PublicCampsRoute
+      parentRoute: typeof PublicRoute
     }
     '/my/applications/$submissionId': {
       id: '/my/applications/$submissionId'
@@ -1034,36 +1034,26 @@ const OperationsRouteRouteWithChildren = OperationsRouteRoute._addFileChildren(
   OperationsRouteRouteChildren,
 )
 
-interface PublicCampsRouteChildren {
-  PublicCampsSlugRoute: typeof PublicCampsSlugRoute
-}
-
-const PublicCampsRouteChildren: PublicCampsRouteChildren = {
-  PublicCampsSlugRoute: PublicCampsSlugRoute,
-}
-
-const PublicCampsRouteWithChildren = PublicCampsRoute._addFileChildren(
-  PublicCampsRouteChildren,
-)
-
 interface PublicRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
-  PublicCampsRoute: typeof PublicCampsRouteWithChildren
   PublicContactRoute: typeof PublicContactRoute
   PublicDonateRoute: typeof PublicDonateRoute
   PublicPrivacyRoute: typeof PublicPrivacyRoute
   PublicTermsRoute: typeof PublicTermsRoute
   PublicIndexRoute: typeof PublicIndexRoute
+  PublicCampsSlugRoute: typeof PublicCampsSlugRoute
+  PublicCampsIndexRoute: typeof PublicCampsIndexRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
-  PublicCampsRoute: PublicCampsRouteWithChildren,
   PublicContactRoute: PublicContactRoute,
   PublicDonateRoute: PublicDonateRoute,
   PublicPrivacyRoute: PublicPrivacyRoute,
   PublicTermsRoute: PublicTermsRoute,
   PublicIndexRoute: PublicIndexRoute,
+  PublicCampsSlugRoute: PublicCampsSlugRoute,
+  PublicCampsIndexRoute: PublicCampsIndexRoute,
 }
 
 const PublicRouteWithChildren =

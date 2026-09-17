@@ -327,6 +327,56 @@ function subjectFor(profile: Profile, account: Account | null): EligibilitySubje
   };
 }
 
+/**
+ * Every instance a subject could apply to, eligible or not, with the reasoning.
+ *
+ * Shared by the signed-in path and the public camp finder so the two can never
+ * disagree. A family told "you're eligible" before registering and "you're
+ * not" after would be a worse outcome than showing nothing at all, and the
+ * only way to guarantee that is one code path.
+ *
+ * `profileId` is null for an anonymous visitor: there is then no existing
+ * application to link to, which is the only thing it is used for.
+ */
+function buildEligibleRows(
+  subject: EligibilitySubject,
+  audience: EligibilityAudience,
+  profileId: Id | null,
+): readonly EligibleInstanceRow[] {
+  return ELIGIBILITY_CRITERIA.filter((criteria) => criteria.audience === audience)
+    .map((criteria) => {
+      const instance = instancesById.get(criteria.programInstanceId);
+      if (!instance) return null;
+
+      const program = programsById.get(criteria.programId);
+      const form = APPLICATION_FORMS.find(
+        (candidate) =>
+          candidate.programInstanceId === criteria.programInstanceId &&
+          candidate.audience === audience,
+      );
+      const existing = profileId
+        ? allSubmissions().find(
+            (submission) =>
+              submission.profileId === profileId &&
+              submission.programInstanceId === criteria.programInstanceId,
+          )
+        : undefined;
+
+      return {
+        instance,
+        programName: program?.name ?? "Unknown program",
+        programSlug: program?.slug ?? "",
+        region: regionFor(instance.id),
+        criteria,
+        result: evaluateEligibility(criteria, subject),
+        formId: form?.id ?? null,
+        deadline: form?.deadline ?? null,
+        existingSubmissionId: existing?.id ?? null,
+      } satisfies EligibleInstanceRow as EligibleInstanceRow;
+    })
+    .filter((row): row is EligibleInstanceRow => row !== null);
+}
+
 // --- the repository ---------------------------------------------------------
 
 export function createLuma2RepositorySlice(): IdentityRepository &
@@ -476,37 +526,7 @@ export function createLuma2RepositorySlice(): IdentityRepository &
       const profile = profileById(profileId);
       if (!profile) return [];
       const account = accountsById.get(profile.accountId) ?? null;
-      const subject = subjectFor(profile, account);
-
-      return ELIGIBILITY_CRITERIA.filter((criteria) => criteria.audience === audience)
-        .map((criteria) => {
-          const instance = instancesById.get(criteria.programInstanceId);
-          if (!instance) return null;
-          const program = programsById.get(criteria.programId);
-          const form = APPLICATION_FORMS.find(
-            (candidate) =>
-              candidate.programInstanceId === criteria.programInstanceId &&
-              candidate.audience === audience,
-          );
-          const existing = allSubmissions().find(
-            (submission) =>
-              submission.profileId === profileId &&
-              submission.programInstanceId === criteria.programInstanceId,
-          );
-
-          return {
-            instance,
-            programName: program?.name ?? "Unknown program",
-            programSlug: program?.slug ?? "",
-            region: regionFor(instance.id),
-            criteria,
-            result: evaluateEligibility(criteria, subject),
-            formId: form?.id ?? null,
-            deadline: form?.deadline ?? null,
-            existingSubmissionId: existing?.id ?? null,
-          } satisfies EligibleInstanceRow as EligibleInstanceRow;
-        })
-        .filter((row): row is EligibleInstanceRow => row !== null);
+      return buildEligibleRows(subjectFor(profile, account), audience, profileId);
     },
 
     async getApplicationForm(formId): Promise<ApplicationForm | null> {
@@ -617,6 +637,24 @@ export function createLuma2RepositorySlice(): IdentityRepository &
           .sort((a, b) => b.count - a.count),
         rubric: RUBRICS.find((rubric) => rubric.programInstanceId === programInstanceId) ?? null,
       };
+    },
+
+    async listEligibilityCriteria(filters = {}) {
+      return ELIGIBILITY_CRITERIA.filter(
+        (criteria) =>
+          (filters.programId ? criteria.programId === filters.programId : true) &&
+          (filters.programInstanceId
+            ? criteria.programInstanceId === filters.programInstanceId
+            : true) &&
+          (filters.audience ? criteria.audience === filters.audience : true),
+      );
+    },
+
+    async evaluateEligibilityForSubject(
+      subject: EligibilitySubject,
+      audience: EligibilityAudience,
+    ): Promise<readonly EligibleInstanceRow[]> {
+      return buildEligibleRows(subject, audience, null);
     },
 
     async listRubrics(programInstanceId): Promise<readonly ScoringRubric[]> {
