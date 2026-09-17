@@ -43,6 +43,7 @@ import { Route as OperationsPeopleRouteImport } from './routes/operations/people
 import { Route as OperationsRiskRouteImport } from './routes/operations/risk'
 import { Route as OperationsVendorsRouteImport } from './routes/operations/vendors'
 import { Route as PublicCampsSlugRouteImport } from './routes/_public/camps.$slug'
+import { Route as MyApplicationsIndexRouteImport } from './routes/my/applications/index'
 import { Route as MyApplicationsSubmissionIdRouteImport } from './routes/my/applications.$submissionId'
 import { Route as MyHouseholdProfileIdRouteImport } from './routes/my/household.$profileId'
 import { Route as MyProgramsInstanceIdRouteImport } from './routes/my/programs.$instanceId'
@@ -227,6 +228,11 @@ const PublicCampsSlugRoute = PublicCampsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PublicCampsRoute,
 } as any)
+const MyApplicationsIndexRoute = MyApplicationsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MyApplicationsRoute,
+} as any)
 const MyApplicationsSubmissionIdRoute =
   MyApplicationsSubmissionIdRouteImport.update({
     id: '/$submissionId',
@@ -353,6 +359,7 @@ export interface FileRoutesByFullPath {
   '/operations/applications/review': typeof OperationsApplicationsReviewRoute
   '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/my/applications/': typeof MyApplicationsIndexRoute
   '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
@@ -368,7 +375,6 @@ export interface FileRoutesByTo {
   '/donate': typeof PublicDonateRoute
   '/privacy': typeof PublicPrivacyRoute
   '/terms': typeof PublicTermsRoute
-  '/my/applications': typeof MyApplicationsRouteWithChildren
   '/my/apply': typeof MyApplyRoute
   '/my/health': typeof MyHealthRoute
   '/my/household': typeof MyHouseholdRouteWithChildren
@@ -398,6 +404,7 @@ export interface FileRoutesByTo {
   '/operations/applications/review': typeof OperationsApplicationsReviewRoute
   '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/my/applications': typeof MyApplicationsIndexRoute
   '/operations/applications': typeof OperationsApplicationsIndexRoute
   '/operations/programs': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdIndexRoute
@@ -449,6 +456,7 @@ export interface FileRoutesById {
   '/operations/applications/review': typeof OperationsApplicationsReviewRoute
   '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/my/applications/': typeof MyApplicationsIndexRoute
   '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
@@ -500,6 +508,7 @@ export interface FileRouteTypes {
     | '/operations/applications/review'
     | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/my/applications/'
     | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
@@ -515,7 +524,6 @@ export interface FileRouteTypes {
     | '/donate'
     | '/privacy'
     | '/terms'
-    | '/my/applications'
     | '/my/apply'
     | '/my/health'
     | '/my/household'
@@ -545,6 +553,7 @@ export interface FileRouteTypes {
     | '/operations/applications/review'
     | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/my/applications'
     | '/operations/applications'
     | '/operations/programs'
     | '/operations/programs/$programId'
@@ -595,6 +604,7 @@ export interface FileRouteTypes {
     | '/operations/applications/review'
     | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/my/applications/'
     | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
@@ -850,6 +860,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicCampsSlugRouteImport
       parentRoute: typeof PublicCampsRoute
     }
+    '/my/applications/': {
+      id: '/my/applications/'
+      path: '/'
+      fullPath: '/my/applications/'
+      preLoaderRoute: typeof MyApplicationsIndexRouteImport
+      parentRoute: typeof MyApplicationsRoute
+    }
     '/my/applications/$submissionId': {
       id: '/my/applications/$submissionId'
       path: '/$submissionId'
@@ -1071,10 +1088,12 @@ const PublicRouteWithChildren =
 
 interface MyApplicationsRouteChildren {
   MyApplicationsSubmissionIdRoute: typeof MyApplicationsSubmissionIdRoute
+  MyApplicationsIndexRoute: typeof MyApplicationsIndexRoute
 }
 
 const MyApplicationsRouteChildren: MyApplicationsRouteChildren = {
   MyApplicationsSubmissionIdRoute: MyApplicationsSubmissionIdRoute,
+  MyApplicationsIndexRoute: MyApplicationsIndexRoute,
 }
 
 const MyApplicationsRouteWithChildren = MyApplicationsRoute._addFileChildren(

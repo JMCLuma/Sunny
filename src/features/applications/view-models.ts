@@ -1,8 +1,10 @@
 import {
   ACTIONABLE_APPLICATION_STATUSES,
   type ApplicationStatus,
+  type BackgroundCheckStatus,
   type EligibilityReason,
   type IsoDate,
+  type Profile,
 } from "@/features/operations/domain";
 import type { EligibleInstanceRow, SubmissionSummary } from "@/features/operations/data";
 
@@ -163,4 +165,34 @@ export function selectableRows(
 /** Reason text, de-duplicated: two rules failing the same way says it once. */
 export function reasonLines(reasons: readonly EligibilityReason[]): readonly string[] {
   return [...new Set(reasons.map((reason) => reason.detail))];
+}
+
+/** How the family refers to a profile — same rule the identity module uses. */
+export function profileDisplayName(profile: Profile): string {
+  return profile.preferredName ?? `${profile.legalFirstName} ${profile.legalLastName}`;
+}
+
+/** Negative once `date` has passed `referenceDate`. */
+export function isPastDue(referenceDate: string, date: IsoDate): boolean {
+  return daysUntil(referenceDate, date) < 0;
+}
+
+/**
+ * The Sterling check, in the one word a staff applicant is owed.
+ *
+ * No findings, no report text — `ApplicationSubmission.backgroundCheckStatus`
+ * carries nothing else, on purpose, so there is nothing more specific this
+ * function could return even by accident.
+ */
+const BACKGROUND_CHECK_LABEL: Readonly<Record<BackgroundCheckStatus, string>> = {
+  not_started: "Not started",
+  invited: "Invitation sent",
+  in_progress: "In progress",
+  cleared: "Cleared",
+  consider: "Under review",
+  expired: "Expired — a new check is needed",
+};
+
+export function presentBackgroundCheckStatus(status: BackgroundCheckStatus): string {
+  return BACKGROUND_CHECK_LABEL[status];
 }
