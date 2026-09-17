@@ -44,7 +44,7 @@ import type {
 
 const DOMAIN = "example.invalid";
 
-export const ACCOUNTS: readonly Account[] = [
+const SEED_ACCOUNTS: readonly Account[] = [
   {
     id: "acct_demo_household_1",
     email: `demo.guardian1@${DOMAIN}`,
@@ -112,7 +112,7 @@ export const ACCOUNTS: readonly Account[] = [
  * Mosaic on age but misses Embark on grade, the other is the reverse. A demo
  * where every profile qualifies for everything proves nothing.
  */
-export const PROFILES: readonly Profile[] = [
+const SEED_PROFILES: readonly Profile[] = [
   {
     id: "prof_demo_guardian_1",
     accountId: "acct_demo_household_1",
@@ -1319,10 +1319,76 @@ function buildCohort(): readonly ApplicationSubmission[] {
   return submissions;
 }
 
+const COHORT_SUBMISSIONS = buildCohort();
+
 export const SUBMISSIONS: readonly ApplicationSubmission[] = [
   ...HAND_WRITTEN_SUBMISSIONS,
-  ...buildCohort(),
+  ...COHORT_SUBMISSIONS,
 ];
+
+/**
+ * An account and a profile for every generated applicant.
+ *
+ * Without these the cohort's submissions pointed at people who did not exist,
+ * and `getSubmissionDetail` — which needs a form, a profile *and* an account —
+ * returned null for all 48 of them. The queue listed them happily, because it
+ * falls back to a label, so every row past the five hand-written ones opened
+ * onto "Application not found".
+ *
+ * Derived from each submission's own answers rather than generated separately,
+ * so the age shown on the detail page is the age the row was filtered by.
+ */
+function cohortPerson(submission: ApplicationSubmission, index: number) {
+  const answer = (questionId: string) =>
+    submission.answers.find((entry) => entry.questionId === questionId)?.value ?? null;
+
+  const account: Account = {
+    id: `acct_cohort_${index}`,
+    email: `demo.applicant${index}@${DOMAIN}`,
+    emailVerified: true,
+    status: "active",
+    // 555-0100 upward stays inside the range reserved for fiction.
+    phone: `555-01${String((index % 90) + 10).padStart(2, "0")}`,
+    city: null,
+    state: null,
+    postalCode: null,
+    regionId: "org_northeast",
+    jamatkhana: typeof answer("q_jamatkhana") === "string" ? String(answer("q_jamatkhana")) : null,
+    createdAt: "2026-08-18T12:00:00.000Z",
+    lastSignInAt: "2026-08-28T12:00:00.000Z",
+  };
+
+  const dateOfBirth = typeof answer("q_dob") === "string" ? String(answer("q_dob")) : null;
+
+  const profile: Profile = {
+    id: `prof_cohort_${index}`,
+    accountId: account.id,
+    personId: null,
+    personLinkStatus: "provisional",
+    kind: "self",
+    legalFirstName: "Demo",
+    legalLastName: `Applicant ${index}`,
+    preferredName: null,
+    dateOfBirth,
+    risingSecularGrade: null,
+    risingRecGrade: null,
+    schoolName: null,
+    schoolType: null,
+    languages: [],
+    needsTranslator: false,
+    ownAccountId: account.id,
+    createdAt: "2026-08-18T12:00:00.000Z",
+  };
+
+  return { account, profile };
+}
+
+const COHORT_PEOPLE = COHORT_SUBMISSIONS.map((submission, position) =>
+  cohortPerson(submission, position + 1),
+);
+
+export const COHORT_ACCOUNTS: readonly Account[] = COHORT_PEOPLE.map((entry) => entry.account);
+export const COHORT_PROFILES: readonly Profile[] = COHORT_PEOPLE.map((entry) => entry.profile);
 
 /** Names for generated applicants, kept out of the submission rows themselves. */
 export const COHORT_APPLICANT_LABELS: ReadonlyMap<Id, string> = new Map(
@@ -1592,3 +1658,10 @@ export const CHECKLIST_PROGRESS: readonly ChecklistProgress[] = [
 
 /** "Now" for the demo, so overdue/upcoming maths is stable across renders. */
 export const DEMO_REFERENCE_DATE = NOW;
+
+/** Hand-written households plus every generated applicant. */
+export const ACCOUNTS: readonly Account[] = [...SEED_ACCOUNTS, ...COHORT_ACCOUNTS];
+export const PROFILES: readonly Profile[] = [...SEED_PROFILES, ...COHORT_PROFILES];
+
+/** Just the hand-written ones, for tests that assert on the curated household. */
+export { SEED_ACCOUNTS, SEED_PROFILES };

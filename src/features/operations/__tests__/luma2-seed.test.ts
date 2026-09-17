@@ -123,11 +123,11 @@ describe("Luma 2.0 seed integrity", () => {
     for (const submission of SUBMISSIONS) {
       assert.ok(formIds.has(submission.formId), submission.id);
       assert.ok(instanceIds.has(submission.programInstanceId), submission.id);
-      // Generated cohort rows carry synthetic profile ids by design; the
-      // hand-written ones must resolve.
-      if (!submission.id.startsWith("sub_cohort_")) {
-        assert.ok(profileIds.has(submission.profileId), submission.id);
-      }
+      // Every submission must resolve, generated ones included: the detail
+      // page needs a form, a profile and an account, and a queue row that
+      // opens onto "not found" is worse than no row at all.
+      assert.ok(profileIds.has(submission.profileId), submission.id);
+      assert.ok(accountIds.has(submission.accountId), submission.id);
     }
   });
 

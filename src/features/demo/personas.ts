@@ -75,8 +75,17 @@ const DEMO_PEOPLE = {
  */
 const FAMILY_GRANTS: readonly PermissionGrant[] = [];
 
-/** Scores applications for one program, and sees nothing else. */
+/**
+ * Scores applications for one program, and sees nothing else.
+ *
+ * `operations.view` is what gets them through the module's front door — the
+ * `/operations` layout guards on it before any child route is reached. Without
+ * it this persona was refused at the shell, which made the point it exists to
+ * demonstrate impossible to show: that someone can review and score without
+ * being able to decide. Scoped to their program, not granted at `all`.
+ */
 const REVIEWER_GRANTS: readonly PermissionGrant[] = [
+  { permission: "operations.view", scope: "program", programIds: ["prog_mosaic"] },
   { permission: "applications.view", scope: "program", programIds: ["prog_mosaic"] },
   { permission: "applications.update", scope: "program", programIds: ["prog_mosaic"] },
   { permission: "programs.view", scope: "program", programIds: ["prog_mosaic"] },
