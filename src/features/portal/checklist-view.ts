@@ -208,6 +208,22 @@ export interface ChecklistDeadline extends ChecklistEntryLocation {
 }
 
 /**
+ * URL search for the checklist detail route.
+ *
+ * `CampChecklistCard` always supplies `profile`, but a bookmarked or
+ * hand-typed link might not — an unrecognised or missing value should
+ * degrade to "work it out from the instance" rather than throw.
+ */
+export interface ChecklistSearch {
+  readonly profile?: string;
+}
+
+export function parseChecklistSearch(input: Record<string, unknown>): ChecklistSearch {
+  const raw = input["profile"];
+  return typeof raw === "string" && raw.length > 0 ? { profile: raw } : {};
+}
+
+/**
  * The single soonest outstanding deadline across every camp in the household.
  * One "what's next" line beats five progress bars on a 360px screen.
  */

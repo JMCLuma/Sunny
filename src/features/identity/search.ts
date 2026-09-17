@@ -24,8 +24,13 @@ export function parseVerifySearch(input: Record<string, unknown>): VerifySearch 
 }
 
 export interface OnboardingSearch {
-  /** 1-based, so the URL reads the way the stepper does. */
-  readonly step: number;
+  /**
+   * 1-based, so the URL reads the way the stepper does. Optional in the
+   * type — not because the parsed value is ever missing, but so a bare
+   * `<Link to="/onboarding">` (no step chosen yet) still type-checks; every
+   * caller that reads it after parsing gets a real number.
+   */
+  readonly step?: number;
 }
 
 export const ONBOARDING_STEP_COUNT = 4;
