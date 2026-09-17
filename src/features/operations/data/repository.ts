@@ -440,7 +440,14 @@ export interface IdentityRepository {
   listMatchReviews(status?: MatchReview["status"]): Promise<readonly MatchReviewRow[]>;
   listPersonDirectory(search?: string): Promise<readonly PersonDirectoryRow[]>;
 
-  /** Adds a household member. Returns the profile, already match-checked. */
+  /**
+   * Adds a household member, provisionally linked.
+   *
+   * Does **not** run the matching rules — callers invoke `resolveProfileMatch`
+   * afterwards, so the UI decides when to show the outcome. Splitting them
+   * matters because an uncertain match must be able to raise a review without
+   * the add itself appearing to fail.
+   */
   addProfile(accountId: Id, draft: ProfileDraft): Promise<Profile>;
   updateProfile(profileId: Id, patch: Partial<ProfileDraft>): Promise<Profile>;
   /**

@@ -77,6 +77,55 @@ but no strings are translated.
 
 ---
 
+## Every screen
+
+39 routes, all verified rendering against a running server.
+
+**Public** — `/` · `/about` · `/contact` · `/donate` · `/privacy` · `/terms` ·
+`/camps` (Find My Camp) · `/camps/:slug`
+
+**Account** — `/signup` · `/verify-email` · `/onboarding`
+
+**My Luma** — `/my` (household dashboard) · `/my/apply` · `/my/applications` ·
+`/my/applications/:id` (the wizard) · `/my/household` · `/my/household/:profileId` ·
+`/my/programs` · `/my/programs/:instanceId` (checklist) · `/my/health` ·
+`/my/waivers` · `/my/travel` · `/my/payment`
+
+**Operations** — `/operations` · `/operations/programs` (+ program, instance and
+event detail) · `/operations/applications` (queue) · `/operations/applications/review`
+· `/selection` · `/interviews` · `/builder` · `/:submissionId` ·
+`/operations/people` · and outline pages for finance, compliance, vendors, risk,
+documents, insights, marketing and admin.
+
+What each persona reaches, measured rather than asserted: parent — refused at
+Operations entirely; reviewer — 3 modules; camp lead — 5; national team — 6;
+senior admin — all 12.
+
+---
+
+## Known gaps
+
+Things that are missing rather than merely undrawn, recorded so nobody
+discovers them mid-demo.
+
+**No account creation.** The contract has no `createAccount`, so `/signup` and
+the account-basics step of `/onboarding` are UI only — nothing persists a
+genuinely new account. Adding a profile to an _existing_ household does write.
+
+**The auto-waitlist rule is copy, not behaviour.** Missing a confirm-by date
+is stated on screen, but the mock runs no clock and no seeded date has passed,
+so the transition never fires. Say "this is the rule" rather than showing it.
+
+**No decision history.** The contract exposes the current outcome but not a
+timeline of who decided what and when. The submission page says so rather than
+inventing one.
+
+**Every seeded application is in the Northeast.** The national-team persona is
+scoped to the Southwest and therefore correctly sees zero applications — the
+access control is working, but there is no Southwest cohort to show it against.
+
+---
+
 ## Decisions this wireframe had to make
 
 Several things had to be settled to draw a screen at all, and the team has not
