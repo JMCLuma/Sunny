@@ -45,27 +45,28 @@ inspects the URL to decide what chrome to draw.
 
 ## Model policy for parallel agents
 
-**The orchestrating session is the only Opus agent.** Every subagent runs on
-Claude Sonnet 5 (`claude-sonnet-5`).
+**The orchestrating session is the only Opus agent.** Subagents are picked by
+the kind of work, not by default:
 
-This is a cost rule, and the numbers are the reason. Per million tokens:
+| Work                                                  | Model                                 |
+| ----------------------------------------------------- | ------------------------------------- |
+| Orchestration, architecture, integration              | Claude Opus 5 (`claude-opus-5`)       |
+| Building — writing features, pages, non-trivial logic | Claude Fable 5.1 (`claude-fable-5-1`) |
+| Research, search, review, light or mechanical tasks   | Claude Sonnet 5 (`claude-sonnet-5`)   |
 
-| Model | Input | Output |
-| --- | --- | --- |
-| Claude Sonnet 5 | $2 | $10 |
-| Claude Opus 5 | $5 | $25 |
-| Claude Fable 5.1 | $10 | $50 |
+The cost is real and worth knowing before reaching for the top row. Per
+million tokens: Sonnet 5 is $2/$10, Opus 5 is $5/$25, Fable 5.1 is $10/$50.
+Fable is the most expensive model available — above Opus tier, five times
+Sonnet — so it is chosen for output quality on build work, never as a
+default. Anything that is mostly reading, searching or following a written
+contract goes to Sonnet.
 
-Sonnet is a fifth of Fable and under half of Opus, so Fable is never the
-efficient choice for a subagent — despite the name it is the most expensive
-model available, above Opus tier. Reach for it only if someone explicitly
-asks for it.
-
-This rule exists because ignoring it has already cost a day: five concurrent
-Opus subagents exhausted the session limit mid-build and terminated all five
-at once. The orchestrator holds the whole picture and the architectural
-decisions, so it earns Opus; the subagents implement against a contract that
-is already written, which Sonnet does well.
+Concurrency is the other half of the rule. Five concurrent Opus subagents
+once exhausted the session limit mid-build and terminated together, losing a
+day. Keep parallel build agents few, give each a disjoint set of files, and
+make sure the contract they build against is written before they start —
+recovering a rate-limited agent's work is only possible because its logic
+was already committed to disk.
 
 ## Comments
 

@@ -23,12 +23,25 @@ bar at the bottom of any page.
 
 ## Running it
 
-Requires [Bun](https://bun.sh).
+Requires [Bun](https://bun.sh). On Windows, install it first with
+`powershell -c "irm bun.sh/install.ps1 | iex"`.
 
 ```sh
+git clone https://github.com/JMCLuma/Sunny
+cd Sunny
+git checkout claude/practical-hypatia-1wv6zj
 bun install
 bun run dev
 ```
+
+Run those one per line. Windows PowerShell 5.1 — the version that ships with
+Windows — rejects `&&` as a statement separator, and chaining them silently
+leaves you in the wrong directory for everything after the `cd`. PowerShell 7
+accepts `&&`; `git --version` style checks won't tell you which you have, but
+`$PSVersionTable.PSVersion` will.
+
+npm works too if you would rather not install Bun (`npm install`, then
+`npm run dev`) — the lockfile is committed for both.
 
 Then open the app and use the **Viewing as** switcher in the bar at the bottom
 to move between a parent, an applicant, a reviewer, a camp lead, the national
