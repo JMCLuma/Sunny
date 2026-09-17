@@ -1,10 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
+/**
+ * Layout for the Applications area — the list at the index and one wizard or
+ * read-only record per submission underneath it.
+ *
+ * A pure layout, the same shape as `/operations/applications`: this file's
+ * only job is the `<Outlet />`, so `/my/applications` (the list) and
+ * `/my/applications/$submissionId` (one application) can share a URL prefix
+ * without either screen carrying the other's concerns.
+ */
 export const Route = createFileRoute("/my/applications")({
-  component: () => (
-    <div className="space-y-2">
-      <h1 className="text-2xl font-semibold tracking-tight">Applications</h1>
-      <p className="text-muted-foreground">Not built yet.</p>
-    </div>
-  ),
+  component: () => <Outlet />,
 });
