@@ -127,7 +127,11 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  const { queryClient, operations } = Route.useRouteContext();
+  // The demo bar must name the persona the guards are actually using. Reading
+  // document.cookie here would render the default during SSR and disagree with
+  // the page below it.
+  const personaId = operations.personaId;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -137,7 +141,7 @@ function RootComponent() {
       <Outlet />
       {/* Mounted once at the root so every surface — public, My Luma and
           Operations — carries the same wireframe notice and persona switcher. */}
-      <DemoBar />
+      <DemoBar personaId={personaId} />
     </QueryClientProvider>
   );
 }

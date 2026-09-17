@@ -31,7 +31,7 @@ import { DEMO_PERSONAS, getPersona, type PersonaId } from "./personas";
  * product's own header, and so a screenshot of a page is still a screenshot of
  * that page.
  */
-export function DemoBar() {
+export function DemoBar({ personaId }: { personaId: string }) {
   const [showDecisions, setShowDecisions] = useState(false);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const decisions = decisionsForRoute(pathname);
@@ -64,7 +64,7 @@ export function DemoBar() {
                 <Badge variant="outline">{decisions.length}</Badge>
               </Button>
             ) : null}
-            <PersonaSwitcher />
+            <PersonaSwitcher personaId={personaId} />
           </div>
         </div>
       </div>
@@ -75,9 +75,9 @@ export function DemoBar() {
   );
 }
 
-function PersonaSwitcher() {
+function PersonaSwitcher({ personaId }: { personaId: string }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const current = getPersona(readActivePersona());
+  const current = getPersona(personaId);
 
   const families = DEMO_PERSONAS.filter((persona) => persona.surface === "family");
   const operations = DEMO_PERSONAS.filter((persona) => persona.surface === "operations");
@@ -122,19 +122,6 @@ function PersonaItem({ id }: { id: PersonaId }) {
       <span className="text-xs text-muted-foreground">{persona.summary}</span>
     </DropdownMenuItem>
   );
-}
-
-/**
- * Read straight from the cookie rather than through route context.
- *
- * The bar renders on public pages too, which have no Operations runtime in
- * scope. Reading the cookie keeps one source of truth without the bar needing
- * a provider wrapped around every surface.
- */
-function readActivePersona(): string | null {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie.match(/(?:^|;\s*)luma_demo_persona=([^;]*)/);
-  return match?.[1] ? decodeURIComponent(match[1]) : null;
 }
 
 const STATUS_TONE: Record<OpenDecision["status"], "default" | "secondary" | "outline"> = {
