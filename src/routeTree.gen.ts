@@ -11,14 +11,26 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as MyRouteImport } from './routes/my'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OperationsRouteRouteImport } from './routes/operations/route'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
+import { Route as PublicCampsRouteImport } from './routes/_public/camps'
 import { Route as PublicContactRouteImport } from './routes/_public/contact'
 import { Route as PublicDonateRouteImport } from './routes/_public/donate'
 import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
 import { Route as PublicTermsRouteImport } from './routes/_public/terms'
 import { Route as MyIndexRouteImport } from './routes/my/index'
+import { Route as MyApplicationsRouteImport } from './routes/my/applications'
+import { Route as MyApplyRouteImport } from './routes/my/apply'
+import { Route as MyHealthRouteImport } from './routes/my/health'
+import { Route as MyHouseholdRouteImport } from './routes/my/household'
+import { Route as MyPaymentRouteImport } from './routes/my/payment'
+import { Route as MyProgramsRouteImport } from './routes/my/programs'
+import { Route as MyTravelRouteImport } from './routes/my/travel'
+import { Route as MyWaiversRouteImport } from './routes/my/waivers'
 import { Route as OperationsIndexRouteImport } from './routes/operations/index'
 import { Route as OperationsAdminRouteImport } from './routes/operations/admin'
 import { Route as OperationsApplicationsRouteImport } from './routes/operations/applications'
@@ -30,6 +42,16 @@ import { Route as OperationsMarketingRouteImport } from './routes/operations/mar
 import { Route as OperationsPeopleRouteImport } from './routes/operations/people'
 import { Route as OperationsRiskRouteImport } from './routes/operations/risk'
 import { Route as OperationsVendorsRouteImport } from './routes/operations/vendors'
+import { Route as PublicCampsSlugRouteImport } from './routes/_public/camps.$slug'
+import { Route as MyApplicationsSubmissionIdRouteImport } from './routes/my/applications.$submissionId'
+import { Route as MyHouseholdProfileIdRouteImport } from './routes/my/household.$profileId'
+import { Route as MyProgramsInstanceIdRouteImport } from './routes/my/programs.$instanceId'
+import { Route as OperationsApplicationsIndexRouteImport } from './routes/operations/applications/index'
+import { Route as OperationsApplicationsSubmissionIdRouteImport } from './routes/operations/applications/$submissionId'
+import { Route as OperationsApplicationsBuilderRouteImport } from './routes/operations/applications/builder'
+import { Route as OperationsApplicationsInterviewsRouteImport } from './routes/operations/applications/interviews'
+import { Route as OperationsApplicationsReviewRouteImport } from './routes/operations/applications/review'
+import { Route as OperationsApplicationsSelectionRouteImport } from './routes/operations/applications/selection'
 import { Route as OperationsProgramsIndexRouteImport } from './routes/operations/programs/index'
 import { Route as OperationsProgramsProgramIdRouteRouteImport } from './routes/operations/programs/$programId/route'
 import { Route as OperationsProgramsEventsRouteImport } from './routes/operations/programs/events'
@@ -45,9 +67,24 @@ const MyRoute = MyRouteImport.update({
   path: '/my',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperationsRouteRoute = OperationsRouteRouteImport.update({
   id: '/operations',
   path: '/operations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
@@ -58,6 +95,11 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
 const PublicAboutRoute = PublicAboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicCampsRoute = PublicCampsRouteImport.update({
+  id: '/camps',
+  path: '/camps',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicContactRoute = PublicContactRouteImport.update({
@@ -83,6 +125,46 @@ const PublicTermsRoute = PublicTermsRouteImport.update({
 const MyIndexRoute = MyIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyApplicationsRoute = MyApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyApplyRoute = MyApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyHealthRoute = MyHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyHouseholdRoute = MyHouseholdRouteImport.update({
+  id: '/household',
+  path: '/household',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyPaymentRoute = MyPaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyProgramsRoute = MyProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyTravelRoute = MyTravelRouteImport.update({
+  id: '/travel',
+  path: '/travel',
+  getParentRoute: () => MyRoute,
+} as any)
+const MyWaiversRoute = MyWaiversRouteImport.update({
+  id: '/waivers',
+  path: '/waivers',
   getParentRoute: () => MyRoute,
 } as any)
 const OperationsIndexRoute = OperationsIndexRouteImport.update({
@@ -140,6 +222,63 @@ const OperationsVendorsRoute = OperationsVendorsRouteImport.update({
   path: '/vendors',
   getParentRoute: () => OperationsRouteRoute,
 } as any)
+const PublicCampsSlugRoute = PublicCampsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PublicCampsRoute,
+} as any)
+const MyApplicationsSubmissionIdRoute =
+  MyApplicationsSubmissionIdRouteImport.update({
+    id: '/$submissionId',
+    path: '/$submissionId',
+    getParentRoute: () => MyApplicationsRoute,
+  } as any)
+const MyHouseholdProfileIdRoute = MyHouseholdProfileIdRouteImport.update({
+  id: '/$profileId',
+  path: '/$profileId',
+  getParentRoute: () => MyHouseholdRoute,
+} as any)
+const MyProgramsInstanceIdRoute = MyProgramsInstanceIdRouteImport.update({
+  id: '/$instanceId',
+  path: '/$instanceId',
+  getParentRoute: () => MyProgramsRoute,
+} as any)
+const OperationsApplicationsIndexRoute =
+  OperationsApplicationsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => OperationsApplicationsRoute,
+  } as any)
+const OperationsApplicationsSubmissionIdRoute =
+  OperationsApplicationsSubmissionIdRouteImport.update({
+    id: '/$submissionId',
+    path: '/$submissionId',
+    getParentRoute: () => OperationsApplicationsRoute,
+  } as any)
+const OperationsApplicationsBuilderRoute =
+  OperationsApplicationsBuilderRouteImport.update({
+    id: '/builder',
+    path: '/builder',
+    getParentRoute: () => OperationsApplicationsRoute,
+  } as any)
+const OperationsApplicationsInterviewsRoute =
+  OperationsApplicationsInterviewsRouteImport.update({
+    id: '/interviews',
+    path: '/interviews',
+    getParentRoute: () => OperationsApplicationsRoute,
+  } as any)
+const OperationsApplicationsReviewRoute =
+  OperationsApplicationsReviewRouteImport.update({
+    id: '/review',
+    path: '/review',
+    getParentRoute: () => OperationsApplicationsRoute,
+  } as any)
+const OperationsApplicationsSelectionRoute =
+  OperationsApplicationsSelectionRouteImport.update({
+    id: '/selection',
+    path: '/selection',
+    getParentRoute: () => OperationsApplicationsRoute,
+  } as any)
 const OperationsProgramsIndexRoute = OperationsProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
@@ -174,13 +313,25 @@ export interface FileRoutesByFullPath {
   '/operations': typeof OperationsRouteRouteWithChildren
   '/': typeof PublicIndexRoute
   '/my': typeof MyRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/signup': typeof SignupRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/about': typeof PublicAboutRoute
+  '/camps': typeof PublicCampsRouteWithChildren
   '/contact': typeof PublicContactRoute
   '/donate': typeof PublicDonateRoute
   '/privacy': typeof PublicPrivacyRoute
   '/terms': typeof PublicTermsRoute
+  '/my/applications': typeof MyApplicationsRouteWithChildren
+  '/my/apply': typeof MyApplyRoute
+  '/my/health': typeof MyHealthRoute
+  '/my/household': typeof MyHouseholdRouteWithChildren
+  '/my/payment': typeof MyPaymentRoute
+  '/my/programs': typeof MyProgramsRouteWithChildren
+  '/my/travel': typeof MyTravelRoute
+  '/my/waivers': typeof MyWaiversRoute
   '/operations/admin': typeof OperationsAdminRoute
-  '/operations/applications': typeof OperationsApplicationsRoute
+  '/operations/applications': typeof OperationsApplicationsRouteWithChildren
   '/operations/compliance': typeof OperationsComplianceRoute
   '/operations/documents': typeof OperationsDocumentsRoute
   '/operations/finance': typeof OperationsFinanceRoute
@@ -192,19 +343,40 @@ export interface FileRoutesByFullPath {
   '/my/': typeof MyIndexRoute
   '/operations/': typeof OperationsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdRouteRouteWithChildren
+  '/camps/$slug': typeof PublicCampsSlugRoute
+  '/my/applications/$submissionId': typeof MyApplicationsSubmissionIdRoute
+  '/my/household/$profileId': typeof MyHouseholdProfileIdRoute
+  '/my/programs/$instanceId': typeof MyProgramsInstanceIdRoute
+  '/operations/applications/$submissionId': typeof OperationsApplicationsSubmissionIdRoute
+  '/operations/applications/builder': typeof OperationsApplicationsBuilderRoute
+  '/operations/applications/interviews': typeof OperationsApplicationsInterviewsRoute
+  '/operations/applications/review': typeof OperationsApplicationsReviewRoute
+  '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
   '/operations/programs/$programId/instances/$instanceId': typeof OperationsProgramsProgramIdInstancesInstanceIdRoute
 }
 export interface FileRoutesByTo {
+  '/onboarding': typeof OnboardingRoute
+  '/signup': typeof SignupRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/about': typeof PublicAboutRoute
+  '/camps': typeof PublicCampsRouteWithChildren
   '/contact': typeof PublicContactRoute
   '/donate': typeof PublicDonateRoute
   '/privacy': typeof PublicPrivacyRoute
   '/terms': typeof PublicTermsRoute
+  '/my/applications': typeof MyApplicationsRouteWithChildren
+  '/my/apply': typeof MyApplyRoute
+  '/my/health': typeof MyHealthRoute
+  '/my/household': typeof MyHouseholdRouteWithChildren
+  '/my/payment': typeof MyPaymentRoute
+  '/my/programs': typeof MyProgramsRouteWithChildren
+  '/my/travel': typeof MyTravelRoute
+  '/my/waivers': typeof MyWaiversRoute
   '/operations/admin': typeof OperationsAdminRoute
-  '/operations/applications': typeof OperationsApplicationsRoute
   '/operations/compliance': typeof OperationsComplianceRoute
   '/operations/documents': typeof OperationsDocumentsRoute
   '/operations/finance': typeof OperationsFinanceRoute
@@ -216,7 +388,17 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/my': typeof MyIndexRoute
   '/operations': typeof OperationsIndexRoute
+  '/camps/$slug': typeof PublicCampsSlugRoute
+  '/my/applications/$submissionId': typeof MyApplicationsSubmissionIdRoute
+  '/my/household/$profileId': typeof MyHouseholdProfileIdRoute
+  '/my/programs/$instanceId': typeof MyProgramsInstanceIdRoute
+  '/operations/applications/$submissionId': typeof OperationsApplicationsSubmissionIdRoute
+  '/operations/applications/builder': typeof OperationsApplicationsBuilderRoute
+  '/operations/applications/interviews': typeof OperationsApplicationsInterviewsRoute
+  '/operations/applications/review': typeof OperationsApplicationsReviewRoute
+  '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/operations/applications': typeof OperationsApplicationsIndexRoute
   '/operations/programs': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdIndexRoute
   '/operations/programs/$programId/instances/$instanceId': typeof OperationsProgramsProgramIdInstancesInstanceIdRoute
@@ -226,13 +408,25 @@ export interface FileRoutesById {
   '/operations': typeof OperationsRouteRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/my': typeof MyRouteWithChildren
+  '/onboarding': typeof OnboardingRoute
+  '/signup': typeof SignupRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/_public/about': typeof PublicAboutRoute
+  '/_public/camps': typeof PublicCampsRouteWithChildren
   '/_public/contact': typeof PublicContactRoute
   '/_public/donate': typeof PublicDonateRoute
   '/_public/privacy': typeof PublicPrivacyRoute
   '/_public/terms': typeof PublicTermsRoute
+  '/my/applications': typeof MyApplicationsRouteWithChildren
+  '/my/apply': typeof MyApplyRoute
+  '/my/health': typeof MyHealthRoute
+  '/my/household': typeof MyHouseholdRouteWithChildren
+  '/my/payment': typeof MyPaymentRoute
+  '/my/programs': typeof MyProgramsRouteWithChildren
+  '/my/travel': typeof MyTravelRoute
+  '/my/waivers': typeof MyWaiversRoute
   '/operations/admin': typeof OperationsAdminRoute
-  '/operations/applications': typeof OperationsApplicationsRoute
+  '/operations/applications': typeof OperationsApplicationsRouteWithChildren
   '/operations/compliance': typeof OperationsComplianceRoute
   '/operations/documents': typeof OperationsDocumentsRoute
   '/operations/finance': typeof OperationsFinanceRoute
@@ -245,7 +439,17 @@ export interface FileRoutesById {
   '/my/': typeof MyIndexRoute
   '/operations/': typeof OperationsIndexRoute
   '/operations/programs/$programId': typeof OperationsProgramsProgramIdRouteRouteWithChildren
+  '/_public/camps/$slug': typeof PublicCampsSlugRoute
+  '/my/applications/$submissionId': typeof MyApplicationsSubmissionIdRoute
+  '/my/household/$profileId': typeof MyHouseholdProfileIdRoute
+  '/my/programs/$instanceId': typeof MyProgramsInstanceIdRoute
+  '/operations/applications/$submissionId': typeof OperationsApplicationsSubmissionIdRoute
+  '/operations/applications/builder': typeof OperationsApplicationsBuilderRoute
+  '/operations/applications/interviews': typeof OperationsApplicationsInterviewsRoute
+  '/operations/applications/review': typeof OperationsApplicationsReviewRoute
+  '/operations/applications/selection': typeof OperationsApplicationsSelectionRoute
   '/operations/programs/events': typeof OperationsProgramsEventsRoute
+  '/operations/applications/': typeof OperationsApplicationsIndexRoute
   '/operations/programs/': typeof OperationsProgramsIndexRoute
   '/operations/programs/$programId/': typeof OperationsProgramsProgramIdIndexRoute
   '/operations/programs/$programId/instances/$instanceId': typeof OperationsProgramsProgramIdInstancesInstanceIdRoute
@@ -256,11 +460,23 @@ export interface FileRouteTypes {
     | '/operations'
     | '/'
     | '/my'
+    | '/onboarding'
+    | '/signup'
+    | '/verify-email'
     | '/about'
+    | '/camps'
     | '/contact'
     | '/donate'
     | '/privacy'
     | '/terms'
+    | '/my/applications'
+    | '/my/apply'
+    | '/my/health'
+    | '/my/household'
+    | '/my/payment'
+    | '/my/programs'
+    | '/my/travel'
+    | '/my/waivers'
     | '/operations/admin'
     | '/operations/applications'
     | '/operations/compliance'
@@ -274,19 +490,40 @@ export interface FileRouteTypes {
     | '/my/'
     | '/operations/'
     | '/operations/programs/$programId'
+    | '/camps/$slug'
+    | '/my/applications/$submissionId'
+    | '/my/household/$profileId'
+    | '/my/programs/$instanceId'
+    | '/operations/applications/$submissionId'
+    | '/operations/applications/builder'
+    | '/operations/applications/interviews'
+    | '/operations/applications/review'
+    | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
     | '/operations/programs/$programId/instances/$instanceId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/onboarding'
+    | '/signup'
+    | '/verify-email'
     | '/about'
+    | '/camps'
     | '/contact'
     | '/donate'
     | '/privacy'
     | '/terms'
+    | '/my/applications'
+    | '/my/apply'
+    | '/my/health'
+    | '/my/household'
+    | '/my/payment'
+    | '/my/programs'
+    | '/my/travel'
+    | '/my/waivers'
     | '/operations/admin'
-    | '/operations/applications'
     | '/operations/compliance'
     | '/operations/documents'
     | '/operations/finance'
@@ -298,7 +535,17 @@ export interface FileRouteTypes {
     | '/'
     | '/my'
     | '/operations'
+    | '/camps/$slug'
+    | '/my/applications/$submissionId'
+    | '/my/household/$profileId'
+    | '/my/programs/$instanceId'
+    | '/operations/applications/$submissionId'
+    | '/operations/applications/builder'
+    | '/operations/applications/interviews'
+    | '/operations/applications/review'
+    | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/operations/applications'
     | '/operations/programs'
     | '/operations/programs/$programId'
     | '/operations/programs/$programId/instances/$instanceId'
@@ -307,11 +554,23 @@ export interface FileRouteTypes {
     | '/operations'
     | '/_public'
     | '/my'
+    | '/onboarding'
+    | '/signup'
+    | '/verify-email'
     | '/_public/about'
+    | '/_public/camps'
     | '/_public/contact'
     | '/_public/donate'
     | '/_public/privacy'
     | '/_public/terms'
+    | '/my/applications'
+    | '/my/apply'
+    | '/my/health'
+    | '/my/household'
+    | '/my/payment'
+    | '/my/programs'
+    | '/my/travel'
+    | '/my/waivers'
     | '/operations/admin'
     | '/operations/applications'
     | '/operations/compliance'
@@ -326,7 +585,17 @@ export interface FileRouteTypes {
     | '/my/'
     | '/operations/'
     | '/operations/programs/$programId'
+    | '/_public/camps/$slug'
+    | '/my/applications/$submissionId'
+    | '/my/household/$profileId'
+    | '/my/programs/$instanceId'
+    | '/operations/applications/$submissionId'
+    | '/operations/applications/builder'
+    | '/operations/applications/interviews'
+    | '/operations/applications/review'
+    | '/operations/applications/selection'
     | '/operations/programs/events'
+    | '/operations/applications/'
     | '/operations/programs/'
     | '/operations/programs/$programId/'
     | '/operations/programs/$programId/instances/$instanceId'
@@ -336,6 +605,9 @@ export interface RootRouteChildren {
   OperationsRouteRoute: typeof OperationsRouteRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
   MyRoute: typeof MyRouteWithChildren
+  OnboardingRoute: typeof OnboardingRoute
+  SignupRoute: typeof SignupRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -354,11 +626,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/operations': {
       id: '/operations'
       path: '/operations'
       fullPath: '/operations'
       preLoaderRoute: typeof OperationsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_public/': {
@@ -373,6 +666,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof PublicAboutRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/camps': {
+      id: '/_public/camps'
+      path: '/camps'
+      fullPath: '/camps'
+      preLoaderRoute: typeof PublicCampsRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/contact': {
@@ -408,6 +708,62 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/my/'
       preLoaderRoute: typeof MyIndexRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/applications': {
+      id: '/my/applications'
+      path: '/applications'
+      fullPath: '/my/applications'
+      preLoaderRoute: typeof MyApplicationsRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/apply': {
+      id: '/my/apply'
+      path: '/apply'
+      fullPath: '/my/apply'
+      preLoaderRoute: typeof MyApplyRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/health': {
+      id: '/my/health'
+      path: '/health'
+      fullPath: '/my/health'
+      preLoaderRoute: typeof MyHealthRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/household': {
+      id: '/my/household'
+      path: '/household'
+      fullPath: '/my/household'
+      preLoaderRoute: typeof MyHouseholdRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/payment': {
+      id: '/my/payment'
+      path: '/payment'
+      fullPath: '/my/payment'
+      preLoaderRoute: typeof MyPaymentRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/programs': {
+      id: '/my/programs'
+      path: '/programs'
+      fullPath: '/my/programs'
+      preLoaderRoute: typeof MyProgramsRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/travel': {
+      id: '/my/travel'
+      path: '/travel'
+      fullPath: '/my/travel'
+      preLoaderRoute: typeof MyTravelRouteImport
+      parentRoute: typeof MyRoute
+    }
+    '/my/waivers': {
+      id: '/my/waivers'
+      path: '/waivers'
+      fullPath: '/my/waivers'
+      preLoaderRoute: typeof MyWaiversRouteImport
       parentRoute: typeof MyRoute
     }
     '/operations/': {
@@ -487,6 +843,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperationsVendorsRouteImport
       parentRoute: typeof OperationsRouteRoute
     }
+    '/_public/camps/$slug': {
+      id: '/_public/camps/$slug'
+      path: '/$slug'
+      fullPath: '/camps/$slug'
+      preLoaderRoute: typeof PublicCampsSlugRouteImport
+      parentRoute: typeof PublicCampsRoute
+    }
+    '/my/applications/$submissionId': {
+      id: '/my/applications/$submissionId'
+      path: '/$submissionId'
+      fullPath: '/my/applications/$submissionId'
+      preLoaderRoute: typeof MyApplicationsSubmissionIdRouteImport
+      parentRoute: typeof MyApplicationsRoute
+    }
+    '/my/household/$profileId': {
+      id: '/my/household/$profileId'
+      path: '/$profileId'
+      fullPath: '/my/household/$profileId'
+      preLoaderRoute: typeof MyHouseholdProfileIdRouteImport
+      parentRoute: typeof MyHouseholdRoute
+    }
+    '/my/programs/$instanceId': {
+      id: '/my/programs/$instanceId'
+      path: '/$instanceId'
+      fullPath: '/my/programs/$instanceId'
+      preLoaderRoute: typeof MyProgramsInstanceIdRouteImport
+      parentRoute: typeof MyProgramsRoute
+    }
+    '/operations/applications/': {
+      id: '/operations/applications/'
+      path: '/'
+      fullPath: '/operations/applications/'
+      preLoaderRoute: typeof OperationsApplicationsIndexRouteImport
+      parentRoute: typeof OperationsApplicationsRoute
+    }
+    '/operations/applications/$submissionId': {
+      id: '/operations/applications/$submissionId'
+      path: '/$submissionId'
+      fullPath: '/operations/applications/$submissionId'
+      preLoaderRoute: typeof OperationsApplicationsSubmissionIdRouteImport
+      parentRoute: typeof OperationsApplicationsRoute
+    }
+    '/operations/applications/builder': {
+      id: '/operations/applications/builder'
+      path: '/builder'
+      fullPath: '/operations/applications/builder'
+      preLoaderRoute: typeof OperationsApplicationsBuilderRouteImport
+      parentRoute: typeof OperationsApplicationsRoute
+    }
+    '/operations/applications/interviews': {
+      id: '/operations/applications/interviews'
+      path: '/interviews'
+      fullPath: '/operations/applications/interviews'
+      preLoaderRoute: typeof OperationsApplicationsInterviewsRouteImport
+      parentRoute: typeof OperationsApplicationsRoute
+    }
+    '/operations/applications/review': {
+      id: '/operations/applications/review'
+      path: '/review'
+      fullPath: '/operations/applications/review'
+      preLoaderRoute: typeof OperationsApplicationsReviewRouteImport
+      parentRoute: typeof OperationsApplicationsRoute
+    }
+    '/operations/applications/selection': {
+      id: '/operations/applications/selection'
+      path: '/selection'
+      fullPath: '/operations/applications/selection'
+      preLoaderRoute: typeof OperationsApplicationsSelectionRouteImport
+      parentRoute: typeof OperationsApplicationsRoute
+    }
     '/operations/programs/': {
       id: '/operations/programs/'
       path: '/programs'
@@ -525,6 +951,32 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface OperationsApplicationsRouteChildren {
+  OperationsApplicationsSubmissionIdRoute: typeof OperationsApplicationsSubmissionIdRoute
+  OperationsApplicationsBuilderRoute: typeof OperationsApplicationsBuilderRoute
+  OperationsApplicationsInterviewsRoute: typeof OperationsApplicationsInterviewsRoute
+  OperationsApplicationsReviewRoute: typeof OperationsApplicationsReviewRoute
+  OperationsApplicationsSelectionRoute: typeof OperationsApplicationsSelectionRoute
+  OperationsApplicationsIndexRoute: typeof OperationsApplicationsIndexRoute
+}
+
+const OperationsApplicationsRouteChildren: OperationsApplicationsRouteChildren =
+  {
+    OperationsApplicationsSubmissionIdRoute:
+      OperationsApplicationsSubmissionIdRoute,
+    OperationsApplicationsBuilderRoute: OperationsApplicationsBuilderRoute,
+    OperationsApplicationsInterviewsRoute:
+      OperationsApplicationsInterviewsRoute,
+    OperationsApplicationsReviewRoute: OperationsApplicationsReviewRoute,
+    OperationsApplicationsSelectionRoute: OperationsApplicationsSelectionRoute,
+    OperationsApplicationsIndexRoute: OperationsApplicationsIndexRoute,
+  }
+
+const OperationsApplicationsRouteWithChildren =
+  OperationsApplicationsRoute._addFileChildren(
+    OperationsApplicationsRouteChildren,
+  )
+
 interface OperationsProgramsProgramIdRouteRouteChildren {
   OperationsProgramsProgramIdIndexRoute: typeof OperationsProgramsProgramIdIndexRoute
   OperationsProgramsProgramIdInstancesInstanceIdRoute: typeof OperationsProgramsProgramIdInstancesInstanceIdRoute
@@ -545,7 +997,7 @@ const OperationsProgramsProgramIdRouteRouteWithChildren =
 
 interface OperationsRouteRouteChildren {
   OperationsAdminRoute: typeof OperationsAdminRoute
-  OperationsApplicationsRoute: typeof OperationsApplicationsRoute
+  OperationsApplicationsRoute: typeof OperationsApplicationsRouteWithChildren
   OperationsComplianceRoute: typeof OperationsComplianceRoute
   OperationsDocumentsRoute: typeof OperationsDocumentsRoute
   OperationsFinanceRoute: typeof OperationsFinanceRoute
@@ -562,7 +1014,7 @@ interface OperationsRouteRouteChildren {
 
 const OperationsRouteRouteChildren: OperationsRouteRouteChildren = {
   OperationsAdminRoute: OperationsAdminRoute,
-  OperationsApplicationsRoute: OperationsApplicationsRoute,
+  OperationsApplicationsRoute: OperationsApplicationsRouteWithChildren,
   OperationsComplianceRoute: OperationsComplianceRoute,
   OperationsDocumentsRoute: OperationsDocumentsRoute,
   OperationsFinanceRoute: OperationsFinanceRoute,
@@ -582,8 +1034,21 @@ const OperationsRouteRouteWithChildren = OperationsRouteRoute._addFileChildren(
   OperationsRouteRouteChildren,
 )
 
+interface PublicCampsRouteChildren {
+  PublicCampsSlugRoute: typeof PublicCampsSlugRoute
+}
+
+const PublicCampsRouteChildren: PublicCampsRouteChildren = {
+  PublicCampsSlugRoute: PublicCampsSlugRoute,
+}
+
+const PublicCampsRouteWithChildren = PublicCampsRoute._addFileChildren(
+  PublicCampsRouteChildren,
+)
+
 interface PublicRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
+  PublicCampsRoute: typeof PublicCampsRouteWithChildren
   PublicContactRoute: typeof PublicContactRoute
   PublicDonateRoute: typeof PublicDonateRoute
   PublicPrivacyRoute: typeof PublicPrivacyRoute
@@ -593,6 +1058,7 @@ interface PublicRouteChildren {
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
+  PublicCampsRoute: PublicCampsRouteWithChildren,
   PublicContactRoute: PublicContactRoute,
   PublicDonateRoute: PublicDonateRoute,
   PublicPrivacyRoute: PublicPrivacyRoute,
@@ -603,11 +1069,63 @@ const PublicRouteChildren: PublicRouteChildren = {
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
+interface MyApplicationsRouteChildren {
+  MyApplicationsSubmissionIdRoute: typeof MyApplicationsSubmissionIdRoute
+}
+
+const MyApplicationsRouteChildren: MyApplicationsRouteChildren = {
+  MyApplicationsSubmissionIdRoute: MyApplicationsSubmissionIdRoute,
+}
+
+const MyApplicationsRouteWithChildren = MyApplicationsRoute._addFileChildren(
+  MyApplicationsRouteChildren,
+)
+
+interface MyHouseholdRouteChildren {
+  MyHouseholdProfileIdRoute: typeof MyHouseholdProfileIdRoute
+}
+
+const MyHouseholdRouteChildren: MyHouseholdRouteChildren = {
+  MyHouseholdProfileIdRoute: MyHouseholdProfileIdRoute,
+}
+
+const MyHouseholdRouteWithChildren = MyHouseholdRoute._addFileChildren(
+  MyHouseholdRouteChildren,
+)
+
+interface MyProgramsRouteChildren {
+  MyProgramsInstanceIdRoute: typeof MyProgramsInstanceIdRoute
+}
+
+const MyProgramsRouteChildren: MyProgramsRouteChildren = {
+  MyProgramsInstanceIdRoute: MyProgramsInstanceIdRoute,
+}
+
+const MyProgramsRouteWithChildren = MyProgramsRoute._addFileChildren(
+  MyProgramsRouteChildren,
+)
+
 interface MyRouteChildren {
+  MyApplicationsRoute: typeof MyApplicationsRouteWithChildren
+  MyApplyRoute: typeof MyApplyRoute
+  MyHealthRoute: typeof MyHealthRoute
+  MyHouseholdRoute: typeof MyHouseholdRouteWithChildren
+  MyPaymentRoute: typeof MyPaymentRoute
+  MyProgramsRoute: typeof MyProgramsRouteWithChildren
+  MyTravelRoute: typeof MyTravelRoute
+  MyWaiversRoute: typeof MyWaiversRoute
   MyIndexRoute: typeof MyIndexRoute
 }
 
 const MyRouteChildren: MyRouteChildren = {
+  MyApplicationsRoute: MyApplicationsRouteWithChildren,
+  MyApplyRoute: MyApplyRoute,
+  MyHealthRoute: MyHealthRoute,
+  MyHouseholdRoute: MyHouseholdRouteWithChildren,
+  MyPaymentRoute: MyPaymentRoute,
+  MyProgramsRoute: MyProgramsRouteWithChildren,
+  MyTravelRoute: MyTravelRoute,
+  MyWaiversRoute: MyWaiversRoute,
   MyIndexRoute: MyIndexRoute,
 }
 
@@ -617,6 +1135,9 @@ const rootRouteChildren: RootRouteChildren = {
   OperationsRouteRoute: OperationsRouteRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
   MyRoute: MyRouteWithChildren,
+  OnboardingRoute: OnboardingRoute,
+  SignupRoute: SignupRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

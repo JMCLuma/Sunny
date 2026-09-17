@@ -64,7 +64,7 @@ export function MyLumaShell({ children }: { children: ReactNode }) {
                   <Menu aria-hidden className="size-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="end" className="w-72">
+              <SheetContent side="right" className="w-72">
                 <SheetTitle className="px-4 pt-4">My Luma</SheetTitle>
                 <nav aria-label="My Luma" className="mt-4 flex flex-col gap-1 px-2">
                   {NAV.map((item) => (
